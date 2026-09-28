@@ -1,0 +1,65 @@
+---
+// Pixel-art rocket for the contact form. Launched by scripts/rocket.ts when the form is submitted.
+// 16×28 grid, one unit = one "pixel": [x, y, w, h, colour]
+type Px = [number, number, number, number, string];
+
+const C = { crema: "#EDE6D8", sombra: "#cfc5b1", ladrillo: "#B5473A", oscuro: "#8e3429", marino: "#1B2433", acero: "#3E5C7E", bruma: "#9CC2E0" };
+
+const BODY: Px[] = [
+  [7, 0, 2, 1, C.ladrillo],
+  [6, 1, 4, 1, C.ladrillo],
+  [5, 2, 6, 2, C.ladrillo],
+  [9, 2, 2, 2, C.oscuro],
+  [4, 4, 8, 12, C.crema],
+  [10, 4, 2, 12, C.sombra],
+  [6, 6, 4, 4, C.marino],
+  [7, 7, 2, 2, C.bruma],
+  [7, 7, 1, 1, C.crema],
+  [4, 12, 8, 1, C.ladrillo],
+  [2, 12, 2, 4, C.ladrillo],
+  [1, 14, 1, 3, C.ladrillo],
+  [12, 12, 2, 4, C.oscuro],
+  [14, 14, 1, 3, C.oscuro],
+  [5, 16, 6, 1, C.marino],
+  [6, 17, 4, 1, C.acero],
+];
+
+// Two frames each, alternated by .bw-flame-a/.bw-flame-b for a flickering exhaust
+const IDLE_A: Px[] = [
+  [6, 18, 4, 2, C.crema],
+  [7, 20, 2, 2, C.ladrillo],
+];
+const IDLE_B: Px[] = [
+  [6, 18, 4, 1, C.crema],
+  [7, 19, 2, 2, C.ladrillo],
+  [7, 21, 1, 1, C.ladrillo],
+];
+const LAUNCH_A: Px[] = [
+  [5, 18, 6, 3, C.crema],
+  [6, 21, 4, 3, C.ladrillo],
+  [7, 24, 2, 3, C.ladrillo],
+  [7, 27, 1, 1, C.bruma],
+];
+const LAUNCH_B: Px[] = [
+  [6, 18, 4, 2, C.crema],
+  [5, 20, 6, 3, C.ladrillo],
+  [6, 23, 4, 2, C.crema],
+  [8, 25, 1, 3, C.ladrillo],
+];
+
+const rects = (list: Px[]) => list.map(([x, y, w, h, c]) => ({ x, y, w, h, c }));
+---
+
+<div data-rocket class="w-fit bw-float" aria-hidden="true">
+  <svg viewBox="0 0 16 28" width="96" height="168" shape-rendering="crispEdges" class="block">
+    {rects(BODY).map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.c} />)}
+    <g data-flame-idle>
+      <g class="bw-flame-a">{rects(IDLE_A).map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.c} />)}</g>
+      <g class="bw-flame-b">{rects(IDLE_B).map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.c} />)}</g>
+    </g>
+    <g data-flame-launch style="display: none">
+      <g class="bw-flame-a">{rects(LAUNCH_A).map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.c} />)}</g>
+      <g class="bw-flame-b">{rects(LAUNCH_B).map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.c} />)}</g>
+    </g>
+  </svg>
+</div>

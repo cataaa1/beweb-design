@@ -3,8 +3,10 @@ export interface Project {
   name: string;
   type: "Institucional" | "E-commerce" | "Landing";
   domain: string;
-  summary: string;
+  /** Full-page screenshot, 1280px wide (the card scrolls through it on hover) */
   image: string;
+  /** Screenshot height in px at 1280px width */
+  imageHeight: number;
   url: string;
 }
 
@@ -28,16 +30,14 @@ export interface ProcessStep {
   duration: string;
 }
 
-const img = (n: number) => `/img/proyecto-${n}.webp`;
-
 export const projects: Project[] = [
   {
     id: "rollpix",
     name: "Rollpix",
     type: "Institucional",
     domain: "rollpix.com",
-    summary: "Sitio institucional que presenta la empresa y sus servicios de forma clara y profesional.",
-    image: img(1),
+    image: "/img/proyectos/rollpix.webp",
+    imageHeight: 4328,
     url: "https://rollpix.com/",
   },
   {
@@ -45,8 +45,8 @@ export const projects: Project[] = [
     name: "StarVie Argentina",
     type: "E-commerce",
     domain: "starvie.com.ar",
-    summary: "Tienda online de pádel con catálogo completo, pagos y envíos a todo el país.",
-    image: img(2),
+    image: "/img/proyectos/starvie.webp",
+    imageHeight: 4866,
     url: "https://starvie.com.ar/",
   },
   {
@@ -54,8 +54,8 @@ export const projects: Project[] = [
     name: "Hit Creativo",
     type: "Institucional",
     domain: "hitcreativo.com",
-    summary: "Presencia digital para una agencia creativa, con foco en su trabajo y su identidad.",
-    image: img(3),
+    image: "/img/proyectos/hit-creativo.webp",
+    imageHeight: 5973,
     url: "https://hitcreativo.com/",
   },
   {
@@ -63,8 +63,8 @@ export const projects: Project[] = [
     name: "Exactian",
     type: "Institucional",
     domain: "exactian.com",
-    summary: "Sitio para una plataforma de gestión de contratistas, pensado para generar consultas.",
-    image: img(4),
+    image: "/img/proyectos/exactian.webp",
+    imageHeight: 5708,
     url: "https://exactian.com/",
   },
   {
@@ -72,8 +72,8 @@ export const projects: Project[] = [
     name: "Tango y Pampa",
     type: "Landing",
     domain: "tangoypampa.com",
-    summary: "Landing page de alto impacto, rápida y enfocada en una sola acción.",
-    image: img(5),
+    image: "/img/proyectos/tango-y-pampa.webp",
+    imageHeight: 7987,
     url: "https://tangoypampa.com/",
   },
   {
@@ -81,8 +81,8 @@ export const projects: Project[] = [
     name: "Telpin",
     type: "Institucional",
     domain: "telpin.com.ar",
-    summary: "Sitio de una cooperativa de telecomunicaciones, con información clara para sus socios.",
-    image: img(6),
+    image: "/img/proyectos/telpin.webp",
+    imageHeight: 5110,
     url: "https://telpin.com.ar/",
   },
   {
@@ -90,8 +90,8 @@ export const projects: Project[] = [
     name: "Cestel",
     type: "Institucional",
     domain: "cestel.com.ar",
-    summary: "Sitio institucional moderno que comunica la marca y sus servicios.",
-    image: img(7),
+    image: "/img/proyectos/cestel.webp",
+    imageHeight: 4101,
     url: "https://cestel.com.ar/",
   },
   {
@@ -99,8 +99,8 @@ export const projects: Project[] = [
     name: "Bibar Bag in Box",
     type: "Landing",
     domain: "bibar.com.ar",
-    summary: "Landing de producto con un mensaje directo para convertir visitas en contactos.",
-    image: img(8),
+    image: "/img/proyectos/bibar.webp",
+    imageHeight: 6276,
     url: "https://bibar.com.ar/ar/baginbox/",
   },
   {
@@ -108,9 +108,18 @@ export const projects: Project[] = [
     name: "Grupo Beniplast",
     type: "Institucional",
     domain: "beniplast.com",
-    summary: "Sitio corporativo para un grupo industrial, ordenado y fácil de recorrer.",
-    image: img(9),
+    image: "/img/proyectos/beniplast.webp",
+    imageHeight: 3318,
     url: "https://beniplast.com/",
+  },
+  {
+    id: "realstep",
+    name: "Real Step",
+    type: "Institucional",
+    domain: "realstep.com.ar",
+    image: "/img/proyectos/realstep.webp",
+    imageHeight: 5607,
+    url: "https://realstep.com.ar/",
   },
 ];
 
@@ -118,8 +127,8 @@ export const services: Service[] = [
   {
     id: "institucional",
     index: "01",
-    title: "Sitios institucionales",
-    lead: "Presencia digital profesional que comunica tu marca con diseño moderno, gran velocidad y bien posicionada en Google.",
+    title: "Sitios Institucionales",
+    lead: "Presencia digital profesional que comunica tu marca con diseño moderno, rendimiento excepcional y las mejores prácticas de SEO.",
     deliverables: ["Diseño a medida", "Autoadministrable", "Adaptado a celulares", "Posicionamiento en Google"],
     tools: ["WordPress", "Astro"],
   },
@@ -134,16 +143,16 @@ export const services: Service[] = [
   {
     id: "tiendas",
     index: "03",
-    title: "Catálogos & tiendas online",
-    lead: "E-commerce completo y catálogos digitales que convierten visitantes en clientes. Tu negocio abierto 24/7.",
+    title: "Catálogos & Tiendas Online",
+    lead: "E-commerce completo y catálogos digitales que convierten visitantes en clientes, con las mejores plataformas del mercado.",
     deliverables: ["Catálogo de productos", "Medios de pago", "Gestión de stock", "Envíos"],
     tools: ["WooCommerce", "TiendaNube", "Shopify"],
   },
   {
     id: "desarrollo",
     index: "04",
-    title: "Desarrollo & consultoría",
-    lead: "Soluciones a medida e inteligencia artificial aplicada a tu negocio, con acompañamiento en cada decisión.",
+    title: "Desarrollo & Consultoría",
+    lead: "Soluciones a medida con las últimas tecnologías, frameworks modernos e inteligencia artificial aplicada a tu negocio.",
     deliverables: ["Proyectos a medida", "Inteligencia artificial", "Asesoramiento", "Mejora de sitios existentes"],
     tools: ["A medida", "IA"],
   },
@@ -196,15 +205,15 @@ export const processSteps: ProcessStep[] = [
 ];
 
 export const stats = [
-  { value: 9, suffix: "+", label: "Proyectos destacados" },
+  { value: 10, suffix: "+", label: "Proyectos destacados" },
   { value: 4, suffix: "", label: "Servicios integrales" },
   { value: 24, suffix: "hs", label: "Tiempo de respuesta" },
   { value: 100, suffix: "%", label: "Diseño a medida" },
 ];
 
 export const navLinks = [
-  { label: "Servicios", href: "#servicios" },
   { label: "Proyectos", href: "#proyectos" },
+  { label: "Servicios", href: "#servicios" },
   { label: "Proceso", href: "#proceso" },
   { label: "Contacto", href: "#contacto" },
 ];

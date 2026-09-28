@@ -1,20 +1,12 @@
 ---
 import Icon from "./Icon.astro";
 import SplitLines from "./SplitLines.astro";
-import { choiceClass } from "@/lib/classes";
-
-const TYPES = ["Institucional", "Landing page", "Tienda online", "A medida"];
-const TIMELINES = ["Lo antes posible", "En 1 mes", "En 2–3 meses", "Sin apuro"];
+import PixelRocket from "./PixelRocket.astro";
 
 const fieldLabel = "group block border-b border-bruma/20 pb-3 transition-colors focus-within:border-crema";
 const fieldCaption =
   "font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50 group-focus-within:text-ladrillo";
 const fieldInput = "mt-2 block w-full bg-transparent text-xl text-crema outline-none placeholder:text-crema/25";
-
-const choices = [
-  { key: "type", label: "¿Qué necesitás?", options: TYPES, value: "Institucional" },
-  { key: "timeline", label: "¿Para cuándo?", options: TIMELINES, value: "En 1 mes" },
-];
 ---
 
 <section id="contacto" class="relative overflow-hidden bg-marino py-28 md:py-40">
@@ -42,6 +34,9 @@ const choices = [
             <span class="text-crema/80">24hs hábiles</span>
           </div>
         </div>
+      </div>
+      <div class="mt-16 hidden lg:block">
+        <PixelRocket />
       </div>
     </div>
 
@@ -108,25 +103,6 @@ const choices = [
             class={fieldInput}
           />
         </label>
-        {
-          choices.map((c) => (
-            <fieldset data-choice={c.key} data-value={c.value}>
-              <legend class="font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50">{c.label}</legend>
-              <div class="mt-3 grid grid-cols-2 gap-px bg-bruma/15 sm:grid-cols-4">
-                {c.options.map((o) => (
-                  <button
-                    type="button"
-                    data-option={o}
-                    aria-pressed={o === c.value ? "true" : "false"}
-                    class={choiceClass(o === c.value)}
-                  >
-                    {o}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-          ))
-        }
         <label for="message" class="group block border-b border-bruma/20 pb-3 focus-within:border-crema">
           <span class={fieldCaption}>Mensaje</span>
           <textarea
@@ -164,7 +140,7 @@ const choices = [
 </section>
 
 <script>
-  import { choiceClass } from "@/lib/classes";
+  import { launchRocket } from "@/scripts/rocket";
 
   const FORM_ENDPOINT = "https://formpost.rollpix.app/submit";
   const TURNSTILE_SITEKEY = "0x4AAAAAACrCJNaPC_Rlf76n";
@@ -186,22 +162,6 @@ const choices = [
   const submit = form.querySelector<HTMLButtonElement>("[data-contact-submit]")!;
   const submitLabel = form.querySelector<HTMLElement>("[data-contact-submit-label]")!;
   const turnstileBox = form.querySelector<HTMLElement>("[data-turnstile]")!;
-
-  // Choice groups ("¿Qué necesitás?", "¿Para cuándo?")
-  form.querySelectorAll<HTMLFieldSetElement>("[data-choice]").forEach((group) => {
-    const options = [...group.querySelectorAll<HTMLButtonElement>("[data-option]")];
-    options.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        group.dataset.value = btn.dataset.option;
-        options.forEach((o) => {
-          const active = o === btn;
-          o.setAttribute("aria-pressed", String(active));
-          o.className = choiceClass(active);
-        });
-      }),
-    );
-  });
-  const choice = (key: string) => form.querySelector<HTMLElement>(`[data-choice="${key}"]`)!.dataset.value;
 
   // Cloudflare Turnstile (script loaded with render=explicit in the layout)
   let widgetId: string | null = null;
@@ -239,10 +199,9 @@ const choices = [
     lastSubmit = now;
     setError("");
     setSending(true);
+    launchRocket(submit);
 
-    // FormPost only knows name/email/phone/message, so the choices travel inside the message
     const data = new FormData(form);
-    data.set("message", `Necesita: ${choice("type")}\nPara cuándo: ${choice("timeline")}\n\n${data.get("message") ?? ""}`);
 
     try {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", body: data });

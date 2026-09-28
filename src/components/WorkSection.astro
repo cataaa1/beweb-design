@@ -31,14 +31,14 @@ const count = (f: string) => (f === "Todos" ? projects.length : projects.filter(
       </div>
     </div>
 
-    <div class="mt-16 grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-12">
+    <div class="mt-16 grid grid-cols-1 gap-y-16 md:grid-cols-2 md:gap-x-10 md:gap-y-28 md:pb-40">
       {
         projects.map((p, i) => (
           <div
             data-reveal
             data-y="28"
             data-project-type={p.type}
-            class={workLayoutClass(i, false)}
+            class={workLayoutClass(i)}
             style={`transition-delay: ${(i % 2) * 120}ms; transform: translate3d(0,28px,0); opacity: 0;`}
           >
             <ProjectCard project={p} index={i} />
@@ -78,7 +78,7 @@ const count = (f: string) => (f === "Todos" ? projects.length : projects.filter(
         hideReveal(card);
         observeReveal(card);
       }
-      card.className = workLayoutClass(i, filter !== "Todos");
+      card.className = workLayoutClass(i);
       card.style.transitionDelay = `${(i % 2) * 120}ms`;
       i++;
     }

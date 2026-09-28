@@ -1,4 +1,7 @@
 // Animated pixel noise field on every canvas[data-pixel-field] (hero and footer).
+// The mouse heats the field up (see heat.ts), which shows as concentric colour rings.
+
+import { HeatGrid } from "./heat";
 
 const PALETTE = ["#1F2F45", "#3E5C7E", "#9CC2E0", "#EDE6D8", "#B5473A"];
 
@@ -32,7 +35,7 @@ function initPixelField(canvas: HTMLCanvasElement) {
   const cell = Number(canvas.dataset.cell ?? 11);
   const speed = Number(canvas.dataset.speed ?? 1);
   const fade = canvas.dataset.fade !== "false";
-  const mouse = { x: -9999, y: -9999, active: false };
+  const heat = new HeatGrid(cell);
 
   let w = 0;
   let h = 0;
@@ -41,11 +44,12 @@ function initPixelField(canvas: HTMLCanvasElement) {
   let jitter: Float32Array = new Float32Array(0);
   let visible = true;
   let last = 0;
+  let dpr = 1;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = rect.width;
     h = rect.height;
     canvas.width = Math.floor(w * dpr);
@@ -55,16 +59,20 @@ function initPixelField(canvas: HTMLCanvasElement) {
     rows = Math.ceil(h / cell);
     jitter = new Float32Array(cols * rows);
     for (let i = 0; i < jitter.length; i++) jitter[i] = (Math.random() - 0.5) * 0.09;
+    heat.resize(w, h);
   };
 
   const draw = (time: number) => {
     requestAnimationFrame(draw);
-    if (!visible) return;
-    if (time - last < 33) return;
+    const dt = last ? Math.min(time - last, 100) : 16.667;
     last = time;
+    if (!visible) return;
+    const rect = canvas.getBoundingClientRect();
+    heat.update(dt, rect.left, rect.top);
     const t = reduce ? 0 : (time / 1000) * 0.12 * speed;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    const m = mouse;
+    if (heat.shake > 0) ctx.translate((Math.random() - 0.5) * heat.shake * 8, (Math.random() - 0.5) * heat.shake * 8);
     const gap = 1.5;
     for (let y = 0; y < rows; y++) {
       const ny = y / rows;
@@ -73,13 +81,7 @@ function initPixelField(canvas: HTMLCanvasElement) {
         let n =
           noise(x * 0.045 + t, y * 0.09 - t * 0.4) * 0.65 +
           noise(x * 0.12 - t * 1.4, y * 0.2 + t * 0.6) * 0.35;
-        n = n * (0.35 + edge * 0.75) + jitter[y * cols + x];
-        if (m.active) {
-          const dx = x * cell - m.x;
-          const dy = y * cell - m.y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 170) n += (1 - d / 170) * 0.45;
-        }
+        n = n * (0.35 + edge * 0.75) + jitter[y * cols + x] + heat.at(x, y) * 0.7;
         let idx = -1;
         if (n > 0.93) idx = 4;
         else if (n > 0.8) idx = 3;
@@ -97,15 +99,20 @@ function initPixelField(canvas: HTMLCanvasElement) {
   requestAnimationFrame(draw);
 
   new ResizeObserver(resize).observe(canvas);
-  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
 
-  canvas.addEventListener("pointermove", (e) => {
+  // Click to explode: hold to charge, release to fire (see HeatGrid.press/release)
+  const local = (e: PointerEvent) => {
     const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-    mouse.active = true;
+    return [e.clientX - r.left, e.clientY - r.top] as const;
+  };
+  canvas.addEventListener("pointerdown", (e) => {
+    canvas.setPointerCapture(e.pointerId);
+    heat.press(...local(e));
   });
-  canvas.addEventListener("pointerleave", () => (mouse.active = false));
+  canvas.addEventListener("pointermove", (e) => heat.drag(...local(e)));
+  canvas.addEventListener("pointerup", () => heat.release());
+  canvas.addEventListener("pointercancel", () => heat.cancel());
+  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
 }
 
 document.querySelectorAll<HTMLCanvasElement>("canvas[data-pixel-field]").forEach(initPixelField);

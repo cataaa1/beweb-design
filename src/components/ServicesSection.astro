@@ -43,7 +43,16 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                 <div data-service-body class={serviceBodyClass(open)}>
                   <div class="overflow-hidden">
                     <div class="grid gap-8 pb-10 pl-10 md:grid-cols-2 md:pl-12">
-                      <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
+                      <div>
+                        <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
+                        <a
+                          href="#contacto"
+                          class="group/cta mt-5 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
+                        >
+                          Me interesa
+                          <span aria-hidden="true" class="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                        </a>
+                      </div>
                       <div class="space-y-5">
                         <ul class="space-y-1.5">
                           {s.deliverables.map((d) => (
@@ -75,13 +84,13 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
 
 <script>
   import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClass, visualPanelClass } from "@/lib/classes";
+  import { showVisual } from "@/scripts/service-visuals";
 
   const section = document.getElementById("servicios")!;
   const items = [...section.querySelectorAll<HTMLElement>("[data-service]")];
   const visual = section.querySelector<HTMLElement>("[data-service-visual]")!;
   const panels = [...visual.querySelectorAll<HTMLElement>("[data-panel]")];
   const fig = visual.querySelector<HTMLElement>("[data-fig]")!;
-  const bars = [...visual.querySelectorAll<HTMLElement>("[data-funnel-bar]")];
   let active = 0;
 
   const setActive = (next: number) => {
@@ -97,7 +106,7 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
     });
     panels.forEach((p) => (p.className = visualPanelClass(p.dataset.layout!, Number(p.dataset.panel) === active)));
     fig.textContent = String(active + 1);
-    bars.forEach((b) => (b.style.transform = active === 1 ? "scaleX(1)" : "scaleX(0)"));
+    showVisual(active);
   };
 
   items.forEach((item, i) => {

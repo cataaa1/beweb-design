@@ -1,0 +1,6 @@
+# Cloudflare Pages: keep the beta and preview hosts out of search engines (production stays indexable)
+https://beta.beweb.com.ar/*
+  X-Robots-Tag: noindex, nofollow
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow

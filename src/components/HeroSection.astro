@@ -4,33 +4,46 @@ import PixelField from "./PixelField.astro";
 import DeployTicker from "./DeployTicker.astro";
 import SplitLines from "./SplitLines.astro";
 import Reveal from "./Reveal.astro";
+
+const PHRASES = [
+  "Sitios institucionales que comuniquen tu marca",
+  "Landing pages rápidas y efectivas",
+  "Tiendas online que vendan 24/7",
+  "¿Estás listo?",
+];
 ---
 
-<section id="top" class="relative overflow-hidden bg-marino pt-16">
+<section id="top" class="relative overflow-hidden bg-marino pb-16 pt-16 md:pb-24">
   <div class="mx-auto grid max-w-[1440px] grid-cols-12 px-5 md:px-10">
     <h1
       class="col-span-12 pb-10 pt-14 text-[15vw] font-medium uppercase leading-[0.86] tracking-[-0.055em] text-crema md:col-span-8 md:pb-14 md:pt-20 md:text-[8.6vw] xl:text-[128px]"
     >
-      <SplitLines lines={["¿Qué", "necesitás?"]} />
+      <SplitLines lines={["Webs que", "despegan."]} />
+      <span class="sr-only">BeWeb, agencia de diseño y desarrollo web en Mar del Plata</span>
     </h1>
 
-    <div
-      class="col-span-12 flex flex-col justify-between gap-8 border-t border-bruma/15 py-8 md:col-span-4 md:border-l md:border-t-0 md:py-20 md:pl-10"
-    >
-      <Reveal delay={250}>
-        <p class="bw-justify font-mono text-[13px] uppercase leading-[1.55] tracking-[0.08em] text-crema">
-          Agencia de diseño y desarrollo web
+    <div class="col-span-12 border-t border-bruma/20 pb-10 pt-8 md:col-span-4 md:my-16 md:flex md:items-center md:border-l md:border-t-0 md:pb-0 md:pl-10 md:pt-0">
+      <Reveal delay={250} class="w-full">
+        <!-- Rotating phrases: each one slides up into view, holds, then slides out (scripts below) -->
+        <p
+          data-rotator
+          class="relative h-[3.3em] max-w-[440px] overflow-hidden text-3xl font-medium leading-[1.08] tracking-[-0.035em] text-crema lg:text-[34px] xl:text-[40px]"
+        >
+          {
+            PHRASES.map((phrase, i) => (
+              <span
+                data-phrase
+                class:list={[
+                  "absolute inset-0 flex items-center transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  i === PHRASES.length - 1 && "text-bruma",
+                ]}
+                style={i === 0 ? "" : "transform: translateY(110%); opacity: 0;"}
+              >
+                {phrase}
+              </span>
+            ))
+          }
         </p>
-      </Reveal>
-      <Reveal delay={400}>
-        <div class="flex items-end justify-between gap-6">
-          <span class="font-mono text-[10px] leading-4 text-bruma/50">
-            38.0055° S<br />57.5426° O
-          </span>
-          <p class="max-w-[240px] text-right text-sm leading-snug text-crema/70">
-            Soluciones digitales completas desde Mar del Plata, desde la idea hasta la implementación.
-          </p>
-        </div>
       </Reveal>
     </div>
   </div>
@@ -53,31 +66,30 @@ import Reveal from "./Reveal.astro";
       Ver proyectos
     </a>
   </div>
-
-  <div class="relative z-10 mx-auto -mt-24 max-w-[1440px] px-5 pb-24 md:-mt-32 md:px-10 md:pb-36">
-    <p
-      data-hero-statement
-      class="max-w-[1000px] text-[28px] font-normal leading-[1.08] tracking-[-0.03em] text-crema will-change-transform md:ml-[16.66%] md:text-[46px]"
-    >
-      Sitios institucionales que comuniquen tu marca, landing pages rápidas y efectivas y tiendas online que vendan
-      24/7. <span class="text-bruma">¿Estás listo? Estos son algunos proyectos:</span>
-    </p>
-  </div>
 </section>
 
 <script>
-  const statement = document.querySelector<HTMLElement>("[data-hero-statement]");
-  if (statement) {
-    let raf = 0;
-    window.addEventListener(
-      "scroll",
-      () => {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          statement.style.transform = `translate3d(0, ${Math.min(window.scrollY, 900) * -0.12}px, 0)`;
-        });
-      },
-      { passive: true },
-    );
+  const HOLD_MS = 2600;
+  const rotator = document.querySelector<HTMLElement>("[data-rotator]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (rotator && !reduce) {
+    const phrases = [...rotator.querySelectorAll<HTMLElement>("[data-phrase]")];
+    let current = 0;
+    const place = (el: HTMLElement, y: string, opacity: string, animate = true) => {
+      el.style.transition = animate ? "" : "none";
+      el.style.transform = `translateY(${y})`;
+      el.style.opacity = opacity;
+    };
+    setInterval(() => {
+      const out = phrases[current];
+      current = (current + 1) % phrases.length;
+      const next = phrases[current];
+      // next waits below the mask, then both move up together
+      place(next, "110%", "0", false);
+      void next.offsetHeight;
+      place(out, "-110%", "0");
+      place(next, "0", "1");
+    }, HOLD_MS);
   }
 </script>

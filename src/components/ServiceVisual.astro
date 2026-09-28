@@ -1,121 +1,427 @@
 ---
 import { visualPanelClass } from "@/lib/classes";
 
-// Positioning of each figure; the active/inactive part comes from visualPanelClass
-const LAYOUTS = [
-  "absolute inset-10 flex flex-col gap-3",
-  "absolute inset-10 flex flex-col justify-end gap-3",
-  "absolute inset-10",
-  "absolute inset-10",
+// Every figure is drawn on a fixed 530×662 stage (the 4:5 box at desktop size) and the whole stage
+// is scaled to the box, so the tiny UI mockups keep their proportions at any width.
+// Each figure is animated by scripts/service-visuals.ts while its service is open.
+const PANEL = "absolute inset-8";
+
+const products = [
+  { name: "Mochila Urbana", price: "$ 38.900", icon: "mochila", add: true },
+  { name: "Zapatillas Run", price: "$ 64.500", icon: "zapatilla", add: false },
+  { name: "Remera Básica", price: "$ 14.900", icon: "remera", add: true },
+  { name: "Gorra Classic", price: "$ 11.200", icon: "gorra", add: false },
 ];
 
-const FUNNEL = [
-  { l: "Visitas", w: "w-[92%]", c: "bg-acero" },
-  { l: "Interés", w: "w-[72%]", c: "bg-bruma/70" },
-  { l: "Consultas", w: "w-[52%]", c: "bg-crema/80" },
-  { l: "Ventas", w: "w-[32%]", c: "bg-ladrillo" },
+// 12×12 pixel icons for the store products: [x, y, w, h, colour]
+const ICONS: Record<string, [number, number, number, number, string][]> = {
+  mochila: [
+    [5, 1, 2, 2, "#1B2433"],
+    [3, 3, 6, 8, "#B5473A"],
+    [4, 7, 4, 3, "#1B2433"],
+    [3, 3, 6, 1, "#8e3429"],
+  ],
+  zapatilla: [
+    [1, 9, 11, 2, "#EDE6D8"],
+    [1, 6, 7, 3, "#3E5C7E"],
+    [5, 4, 3, 2, "#3E5C7E"],
+    [8, 7, 3, 2, "#3E5C7E"],
+    [3, 7, 1, 1, "#EDE6D8"],
+    [5, 6, 1, 1, "#EDE6D8"],
+  ],
+  remera: [
+    [3, 3, 6, 8, "#1B2433"],
+    [1, 3, 2, 3, "#1B2433"],
+    [9, 3, 2, 3, "#1B2433"],
+    [5, 3, 2, 1, "#9CC2E0"],
+    [5, 6, 2, 2, "#B5473A"],
+  ],
+  gorra: [
+    [3, 4, 6, 4, "#9CC2E0"],
+    [4, 3, 4, 1, "#9CC2E0"],
+    [7, 7, 5, 1, "#1B2433"],
+    [5, 4, 1, 1, "#EDE6D8"],
+  ],
+};
+
+const code = [
+  "// Asistente con IA que responde consultas",
+  'import { ia } from "./ia";',
+  'import { crm } from "./crm";',
+  "",
+  "export async function responder(consulta) {",
+  "  const cliente = await crm.buscar(consulta.email);",
+  "  const respuesta = await ia.generar({",
+  "    contexto: cliente.historial,",
+  "    pregunta: consulta.mensaje,",
+  "  });",
+  "  await crm.registrar(cliente, respuesta);",
+  "  return respuesta;",
+  "}",
 ];
 
-const NODES = [
-  { x: 150, y: 70, l: "tu web", c: "#EDE6D8" },
-  { x: 70, y: 190, l: "clientes", c: "#3E5C7E" },
-  { x: 230, y: 190, l: "ventas", c: "#3E5C7E" },
-  { x: 150, y: 310, l: "IA", c: "#B5473A" },
-];
-
-const block = "bg-bruma/15";
+const chrome = "flex items-center gap-2 border-b border-bruma/15 px-3 py-2";
+const dots = ["bg-ladrillo/80", "bg-bruma/30", "bg-bruma/30"];
+const url = "ml-2 flex flex-1 items-center gap-1.5 bg-marino px-2 py-1 font-mono text-[9px] text-crema/60";
+const card = "border border-bruma/20 bg-marino-2 shadow-[0_24px_48px_-20px_rgba(0,0,0,0.75)]";
 ---
 
 <div
   data-service-visual
   class="relative aspect-[4/5] w-full overflow-hidden border border-bruma/15 bg-marino bw-dots-bg"
 >
-  <div class="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.14em] text-bruma/50">
-    fig. 0<span data-fig>1</span>
-  </div>
+  <div data-stage class="absolute left-0 top-0 h-[662px] w-[530px] origin-top-left">
+    <div class="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.14em] text-bruma/50">
+      fig. 0<span data-fig>1</span>
+    </div>
 
-  <!-- 01 Institucional — layout wireframe -->
-  <div data-panel="0" data-layout={LAYOUTS[0]} class={visualPanelClass(LAYOUTS[0], true)}>
-    <div class="flex items-center justify-between">
-      <div class="h-3 w-16 bg-crema/70"></div>
-      <div class="flex gap-2">
-        <div class={`${block} h-2 w-8`}></div>
-        <div class={`${block} h-2 w-8`}></div>
-        <div class={`${block} h-2 w-8`}></div>
-      </div>
-    </div>
-    <div class="mt-6 space-y-2">
-      <div class="h-7 w-[85%] bg-crema/80"></div>
-      <div class="h-7 w-[60%] bg-crema/80"></div>
-    </div>
-    <div class="mt-3 h-[38%] w-full bg-acero"></div>
-    <div class="grid flex-1 grid-cols-3 gap-2">
-      <div class={block}></div>
-      <div class={block}></div>
-      <div class="bg-ladrillo/80"></div>
-    </div>
-  </div>
-
-  <!-- 03 Tiendas online — product grid + cart -->
-  <div data-panel="2" data-layout={LAYOUTS[2]} class={visualPanelClass(LAYOUTS[2], false)}>
-    <div class="grid h-full grid-cols-2 gap-3">
-      {
-        [0, 1, 2, 3].map((i) => (
-          <div class="flex flex-col gap-2 border border-bruma/10 p-2">
-            <div class:list={["flex-1", i === 1 ? "bg-ladrillo/80" : "bg-acero/70"]} />
-            <div class="h-2 w-3/4 bg-crema/60" />
-            <div class={`${block} h-2 w-1/3`} />
-          </div>
-        ))
-      }
-    </div>
-    <div class="absolute -right-2 bottom-8 w-44 border border-crema/20 bg-marino-2 p-3 shadow-2xl">
-      <div class="flex items-center justify-between font-mono text-[10px] text-crema/70">
-        <span>Carrito</span>
-        <span>3</span>
-      </div>
-      <div class="mt-3 space-y-1.5">
-        <div class={`${block} h-2 w-full`}></div>
-        <div class={`${block} h-2 w-4/5`}></div>
-      </div>
-      <div class="mt-3 bg-ladrillo py-1.5 text-center font-mono text-[10px] text-crema">Pagar $ 48.900</div>
-    </div>
-  </div>
-
-  <!-- 04 Desarrollo — connected pieces -->
-  <div data-panel="3" data-layout={LAYOUTS[3]} class={visualPanelClass(LAYOUTS[3], false)}>
-    <svg viewBox="0 0 300 380" class="h-full w-full">
-      <g stroke="#9CC2E0" stroke-opacity="0.5" fill="none" stroke-width="1.2">
-        <path class="bw-dash" d="M150 70 L70 190"></path>
-        <path class="bw-dash" d="M150 70 L230 190"></path>
-        <path class="bw-dash" d="M70 190 L150 310"></path>
-        <path class="bw-dash" d="M230 190 L150 310"></path>
-      </g>
-      {
-        NODES.map((n) => (
-          <g>
-            <rect x={n.x - 44} y={n.y - 20} width="88" height="40" fill="#1F2F45" stroke={n.c} stroke-width="1.2" />
-            <rect x={n.x - 36} y={n.y - 4} width="8" height="8" fill={n.c} />
-            <text x={n.x - 22} y={n.y + 4} fill="#EDE6D8" font-size="11" font-family="Space Mono">{n.l}</text>
-          </g>
-        ))
-      }
-    </svg>
-  </div>
-
-  <!-- 02 Landing pages — conversion funnel -->
-  <div data-panel="1" data-layout={LAYOUTS[1]} class={visualPanelClass(LAYOUTS[1], false)}>
-    {
-      FUNNEL.map((b, i) => (
-        <div class="flex items-center gap-3">
-          <span class="w-16 shrink-0 font-mono text-[10px] text-crema/60">{b.l}</span>
-          <div
-            data-funnel-bar
-            class:list={["h-10 origin-left transition-transform duration-1000", b.w, b.c]}
-            style={`transform: scaleX(0); transition-delay: ${i * 120}ms;`}
-          />
+    <!-- 01 Sitio institucional: desktop + phone + Google ranking, headline edited live -->
+    <div data-panel="0" data-layout={PANEL} data-visual="institucional" class={visualPanelClass(PANEL, true)}>
+      <div class={`absolute left-0 top-4 w-[86%] ${card}`}>
+        <div class={chrome}>
+          <span class="flex gap-1">{dots.map((d) => <span class={`h-2 w-2 ${d}`} />)}</span>
+          <span class={url}><span class="h-1.5 w-1.5 bg-bruma"></span>tuempresa.com.ar</span>
         </div>
-      ))
-    }
+        <div data-viewport class="relative h-[300px] overflow-hidden bg-crema">
+          <div data-page class="transition-transform duration-[1800ms] ease-in-out">
+            <div class="flex items-center justify-between px-4 py-3">
+              <span class="flex items-center gap-1.5 font-mono text-[10px] font-bold text-marino">
+                <span class="h-2.5 w-2.5 bg-ladrillo"></span>TU EMPRESA
+              </span>
+              <span class="flex items-center gap-3 text-[8px] text-marino/60">
+                <span>Inicio</span><span>Servicios</span><span>Nosotros</span>
+                <span class="bg-marino px-2 py-1 text-crema">Contacto</span>
+              </span>
+            </div>
+            <div class="grid grid-cols-5 gap-4 px-4 pt-3">
+              <div class="col-span-3">
+                <span
+                  data-edit
+                  class="mb-1 block w-max border border-ladrillo px-1.5 py-0.5 font-mono text-[7px] text-ladrillo opacity-0 transition-opacity duration-200"
+                  >✎ editando</span
+                >
+                <p class="text-[18px] font-semibold leading-[1.05] tracking-[-0.03em] text-marino">
+                  <span data-headline>Soluciones que hacen crecer tu empresa</span><span
+                    data-caret
+                    class="ml-px hidden h-[16px] w-[2px] translate-y-[2px] bg-ladrillo align-baseline bw-blink"></span>
+                </p>
+                <div class="mt-2.5 space-y-1">
+                  <div class="h-1 w-full bg-marino/15"></div>
+                  <div class="h-1 w-4/5 bg-marino/15"></div>
+                </div>
+                <span class="mt-3 inline-block bg-ladrillo px-2.5 py-1.5 text-[8px] font-medium text-crema">
+                  Pedí tu presupuesto
+                </span>
+              </div>
+              <div class="relative col-span-2 aspect-square overflow-hidden bg-acero">
+                <div class="absolute right-3 top-3 h-5 w-5 bg-crema/90"></div>
+                <div class="absolute bottom-0 left-2 h-[45%] w-[22%] bg-marino"></div>
+                <div class="absolute bottom-0 left-[30%] h-[65%] w-[24%] bg-marino-2"></div>
+                <div class="absolute bottom-0 left-[60%] h-[35%] w-[30%] bg-marino"></div>
+                <div class="absolute bottom-0 h-[6%] w-full bg-bruma/60"></div>
+              </div>
+            </div>
+            <div class="mt-5 flex justify-between px-4">
+              {[0, 1, 2, 3, 4].map(() => <div class="h-2 w-12 bg-marino/20" />)}
+            </div>
+            <div class="mt-5 grid grid-cols-3 gap-2 px-4">
+              {
+                [
+                  ["Asesoría", "bg-ladrillo"],
+                  ["Proyectos", "bg-acero"],
+                  ["Soporte", "bg-bruma"],
+                ].map(([t, c]) => (
+                  <div class="border border-marino/10 bg-marino/[0.04] p-2">
+                    <div class={`h-3 w-3 ${c}`} />
+                    <p class="mt-2 text-[9px] font-semibold text-marino">{t}</p>
+                    <div class="mt-1 h-1 w-full bg-marino/15" />
+                    <div class="mt-1 h-1 w-2/3 bg-marino/15" />
+                  </div>
+                ))
+              }
+            </div>
+            <div class="mt-5 bg-marino px-4 py-4">
+              <p class="text-[10px] text-crema">“Nos ordenaron la comunicación y hoy nos encuentran.”</p>
+              <p class="mt-1 font-mono text-[8px] text-bruma/70">— Cliente de BeWeb</p>
+            </div>
+            <div class="grid grid-cols-4 gap-2 bg-marino-deep px-4 py-4">
+              {[0, 1, 2, 3].map(() => <div class="h-1.5 bg-crema/15" />)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-phone class="absolute bottom-[21%] right-0 w-[29%] border-[5px] border-marino-deep bg-marino-deep shadow-[0_24px_48px_-16px_rgba(0,0,0,0.8)] transition-[opacity,transform] duration-700">
+        <div data-phone-viewport class="relative aspect-[9/17] overflow-hidden bg-crema">
+          <div data-phone-page class="transition-transform duration-[1800ms] ease-in-out">
+            <div class="flex items-center justify-between px-2 py-2">
+              <span class="h-2 w-2 bg-ladrillo"></span>
+              <span class="space-y-0.5"><span class="block h-px w-3 bg-marino"></span><span class="block h-px w-3 bg-marino"></span></span>
+            </div>
+            <p data-phone-headline class="px-2 text-[10px] font-semibold leading-[1.05] text-marino">
+              Soluciones que hacen crecer tu empresa
+            </p>
+            <span class="mx-2 mt-2 inline-block bg-ladrillo px-1.5 py-1 text-[6px] text-crema">Pedí tu presupuesto</span>
+            <div class="mx-2 mt-2 aspect-[4/3] bg-acero"></div>
+            {
+              ["bg-ladrillo", "bg-acero", "bg-bruma"].map((c) => (
+                <div class="mx-2 mt-2 border border-marino/10 p-1.5">
+                  <div class={`h-2 w-2 ${c}`} />
+                  <div class="mt-1 h-1 w-full bg-marino/15" />
+                </div>
+              ))
+            }
+            <div class="mt-2 h-10 bg-marino"></div>
+          </div>
+        </div>
+      </div>
+
+      <div data-serp class={`absolute bottom-0 left-0 w-[66%] p-3 transition-[opacity,transform] duration-700 ${card}`}>
+        <div class="flex items-center justify-between font-mono text-[9px] text-bruma/60">
+          <span>Google · “diseño web mar del plata”</span>
+          <span>posición <b data-rank class="font-bold text-crema">#14</b></span>
+        </div>
+        <div data-result class="mt-2 border-l-2 border-transparent pl-2 transition-colors duration-300">
+          <p class="font-mono text-[8px] text-crema/40">tuempresa.com.ar</p>
+          <p class="text-[12px] text-bruma">Tu Empresa — Soluciones que hacen crecer tu empresa</p>
+          <div class="mt-1 h-1 w-5/6 bg-crema/15"></div>
+          <div class="mt-1 h-1 w-3/5 bg-crema/15"></div>
+        </div>
+      </div>
+      <svg data-cursor viewBox="0 0 11 17" class="pointer-events-none absolute left-0 top-0 z-10 w-3.5 opacity-0" shape-rendering="crispEdges">
+        <path d="M0.5 0.5V14.5L3.5 11.5L5.5 16.5L7.5 15.5L5.5 10.5H9.5Z" fill="#EDE6D8" stroke="#141B27"></path>
+      </svg>
+    </div>
+
+    <!-- 02 Landing page: speed score, form filled and sent, leads counter -->
+    <div data-panel="1" data-layout={PANEL} data-visual="landing" class={visualPanelClass(PANEL, false)}>
+      <div class={`absolute left-0 top-4 w-[80%] ${card}`}>
+        <div class={chrome}>
+          <span class="flex gap-1">{dots.map((d) => <span class={`h-2 w-2 ${d}`} />)}</span>
+          <span class={url}><span class="h-1.5 w-1.5 bg-bruma"></span>tuproducto.com/lanzamiento</span>
+        </div>
+        <div class="bg-crema p-5">
+          <span class="font-mono text-[8px] uppercase tracking-[0.14em] text-ladrillo">Oferta de lanzamiento</span>
+          <p class="mt-2 text-[20px] font-semibold leading-[1.02] tracking-[-0.03em] text-marino">
+            Duplicá tus consultas en 30 días
+          </p>
+          <ul class="mt-3 space-y-1.5">
+            {
+              ["Sin permanencia", "Soporte todos los días", "Listo en una semana"].map((t) => (
+                <li class="flex items-center gap-2 text-[9px] text-marino/75">
+                  <span class="grid h-2.5 w-2.5 place-items-center bg-ladrillo text-[7px] leading-none text-crema">✓</span>
+                  {t}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-4 space-y-2.5 border border-marino/15 bg-marino/[0.04] p-3">
+            {
+              [
+                ["Nombre", "name"],
+                ["Email", "email"],
+              ].map(([label, key]) => (
+                <label class="block border-b border-marino/20 pb-1">
+                  <span class="font-mono text-[7px] uppercase tracking-[0.12em] text-marino/50">{label}</span>
+                  <span class="block h-[14px] text-[10px] text-marino">
+                    <span data-field={key} />
+                    <span data-field-caret={key} class="ml-px hidden h-[10px] w-px translate-y-[1px] bg-marino bw-blink" />
+                  </span>
+                </label>
+              ))
+            }
+            <div
+              data-submit
+              class="bg-ladrillo py-2 text-center text-[9px] font-medium text-crema transition-[background-color,transform] duration-150"
+            >
+              Quiero mi presupuesto →
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-speed class={`absolute right-0 top-[27%] w-[36%] p-3 ${card}`}>
+        <div class="flex items-center gap-3">
+          <svg viewBox="0 0 44 44" class="h-14 w-14 -rotate-90">
+            <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(156,194,224,0.15)" stroke-width="5"></circle>
+            <circle
+              data-ring
+              cx="22"
+              cy="22"
+              r="18"
+              fill="none"
+              stroke="#9CC2E0"
+              stroke-width="5"
+              stroke-dasharray="113.1"
+              stroke-dashoffset="113.1"
+              class="transition-[stroke-dashoffset] duration-[1200ms] ease-out"></circle>
+          </svg>
+          <div>
+            <p data-score class="text-[26px] font-semibold leading-none text-crema">0</p>
+            <p class="mt-1 font-mono text-[8px] uppercase tracking-[0.12em] text-bruma/60">Rendimiento</p>
+          </div>
+        </div>
+        <p class="mt-3 border-t border-bruma/15 pt-2 font-mono text-[9px] text-crema/70">
+          Carga en <span data-load class="text-crema">—</span>
+        </p>
+      </div>
+
+      <div data-leads-card class={`absolute bottom-0 left-[6%] w-[58%] p-3 transition-colors duration-300 ${card}`}>
+        <div class="flex items-baseline justify-between">
+          <p class="font-mono text-[8px] uppercase tracking-[0.12em] text-bruma/60">Consultas esta semana</p>
+          <p data-leads class="text-[22px] font-semibold leading-none text-crema">23</p>
+        </div>
+        <div class="mt-3 flex h-16 items-end gap-1.5">
+          {[30, 45, 38, 60, 52, 70].map((h) => <div class="flex-1 bg-acero" style={`height: ${h}%`} />)}
+          <div data-newbar class="flex-1 bg-ladrillo transition-[height] duration-700 ease-out" style="height: 0%"></div>
+        </div>
+        <div class="mt-1 flex justify-between font-mono text-[7px] text-crema/30">
+          {["L", "M", "M", "J", "V", "S", "D"].map((d) => <span class="flex-1 text-center">{d}</span>)}
+        </div>
+      </div>
+      <svg data-cursor viewBox="0 0 11 17" class="pointer-events-none absolute left-0 top-0 z-10 w-3.5 opacity-0" shape-rendering="crispEdges">
+        <path d="M0.5 0.5V14.5L3.5 11.5L5.5 16.5L7.5 15.5L5.5 10.5H9.5Z" fill="#EDE6D8" stroke="#141B27"></path>
+      </svg>
+    </div>
+
+    <!-- 03 Tienda online: add to cart, checkout, payment approved, shipping tracking -->
+    <div data-panel="2" data-layout={PANEL} data-visual="tienda" class={visualPanelClass(PANEL, false)}>
+      <div class={`absolute inset-x-0 top-4 bottom-0 flex flex-col ${card}`}>
+        <div class={chrome}>
+          <span class="flex gap-1">{dots.map((d) => <span class={`h-2 w-2 ${d}`} />)}</span>
+          <span class={url}><span class="h-1.5 w-1.5 bg-bruma"></span>tutienda.com.ar</span>
+        </div>
+        <div class="relative flex-1 overflow-hidden bg-crema">
+          <div class="flex items-center justify-between border-b border-marino/10 px-4 py-3">
+            <span class="flex items-center gap-1.5 font-mono text-[11px] font-bold text-marino">
+              <span class="h-2.5 w-2.5 bg-acero"></span>TIENDA
+            </span>
+            <span class="w-[38%] border border-marino/15 px-2 py-1 text-[8px] text-marino/40">Buscar productos…</span>
+            <span data-cart-btn class="relative grid h-7 w-7 place-items-center border border-marino/20 bg-crema">
+              <svg viewBox="0 0 12 12" class="h-3.5 w-3.5" shape-rendering="crispEdges">
+                <path d="M1 2h2l1 6h6l1-4H4" fill="none" stroke="#1B2433" stroke-width="1.2"></path>
+                <rect x="4" y="9.5" width="1.5" height="1.5" fill="#1B2433"></rect>
+                <rect x="8.5" y="9.5" width="1.5" height="1.5" fill="#1B2433"></rect>
+              </svg>
+              <span
+                data-cart-count
+                class="absolute -right-1.5 -top-1.5 grid h-3.5 min-w-[14px] place-items-center bg-ladrillo px-0.5 font-mono text-[8px] leading-none text-crema transition-transform duration-200"
+                >0</span
+              >
+            </span>
+          </div>
+          <div class="flex gap-4 px-4 py-2 font-mono text-[8px] uppercase tracking-[0.1em] text-marino/50">
+            <span class="text-marino">Novedades</span><span>Ofertas</span><span>Envío gratis</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3 px-4 pb-4">
+            {
+              products.map((p, i) => (
+                <div data-product={i} class="border border-marino/10 bg-marino/[0.03] p-2">
+                  <div class="grid aspect-[4/3] place-items-center bg-marino/[0.07]">
+                    <svg viewBox="0 0 12 12" class="h-14 w-14" shape-rendering="crispEdges">
+                      {ICONS[p.icon].map(([x, y, w, h, c]) => (
+                        <rect x={x} y={y} width={w} height={h} fill={c} />
+                      ))}
+                    </svg>
+                  </div>
+                  <p class="mt-2 text-[9px] text-marino/80">{p.name}</p>
+                  <div class="mt-1 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-marino">{p.price}</span>
+                    <span
+                      data-add={p.add ? String(i) : undefined}
+                      class="border border-marino/30 px-1.5 py-0.5 text-[8px] text-marino transition-colors duration-150"
+                    >
+                      Agregar
+                    </span>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+
+          <span data-fly class="pointer-events-none absolute left-0 top-0 z-20 h-3 w-3 bg-ladrillo opacity-0"></span>
+
+          <div
+            data-drawer
+            class="absolute inset-y-0 right-0 z-10 flex w-[60%] translate-x-full flex-col border-l border-marino/15 bg-crema p-3 shadow-[-24px_0_48px_-24px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-out"
+          >
+            <p class="font-mono text-[9px] uppercase tracking-[0.12em] text-marino/60">Tu carrito</p>
+            <div class="mt-2 space-y-2 border-b border-marino/10 pb-2">
+              {
+                products
+                  .filter((p) => p.add)
+                  .map((p) => (
+                    <div class="flex items-center gap-2">
+                      <div class="grid h-8 w-8 shrink-0 place-items-center bg-marino/[0.07]">
+                        <svg viewBox="0 0 12 12" class="h-6 w-6" shape-rendering="crispEdges">
+                          {ICONS[p.icon].map(([x, y, w, h, c]) => (
+                            <rect x={x} y={y} width={w} height={h} fill={c} />
+                          ))}
+                        </svg>
+                      </div>
+                      <span class="flex-1 text-[9px] text-marino">{p.name}</span>
+                      <span class="text-[9px] font-semibold text-marino">{p.price}</span>
+                    </div>
+                  ))
+              }
+            </div>
+            <div class="mt-2 space-y-1 text-[9px] text-marino/70">
+              <p class="flex justify-between"><span>Envío</span><span class="text-acero">Gratis</span></p>
+              <p class="flex justify-between text-[11px] font-semibold text-marino">
+                <span>Total</span><span data-total>$ 0</span>
+              </p>
+            </div>
+            <div data-pay class="mt-3 bg-ladrillo py-2 text-center text-[9px] font-medium text-crema transition-colors duration-200">
+              Pagar
+            </div>
+            <div data-shipping class="mt-3 opacity-0 transition-opacity duration-300">
+              <p class="font-mono text-[8px] text-marino/60">Pedido #1042</p>
+              <div class="mt-2 grid grid-cols-3 gap-1">
+                {
+                  ["Preparando", "En camino", "Entregado"].map((s) => (
+                    <div>
+                      <div data-ship-step class="h-1.5 bg-marino/15 transition-colors duration-300" />
+                      <p class="mt-1 text-[7px] text-marino/60">{s}</p>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <svg data-cursor viewBox="0 0 11 17" class="pointer-events-none absolute left-0 top-0 z-30 w-3.5 opacity-0" shape-rendering="crispEdges">
+        <path d="M0.5 0.5V14.5L3.5 11.5L5.5 16.5L7.5 15.5L5.5 10.5H9.5Z" fill="#EDE6D8" stroke="#141B27"></path>
+      </svg>
+    </div>
+
+    <!-- 04 Desarrollo & consultoría: code typing itself, then a deploy in the terminal -->
+    <div data-panel="3" data-layout={PANEL} data-visual="codigo" class={visualPanelClass(PANEL, false)}>
+      <div class={`absolute inset-x-0 top-4 bg-marino-deep ${card}`}>
+        <div class="flex items-center border-b border-bruma/15 font-mono text-[9px]">
+          <span class="border-b-2 border-ladrillo px-3 py-2 text-crema">asistente.ts</span>
+          <span class="px-3 py-2 text-crema/40">crm.ts</span>
+          <span class="px-3 py-2 text-crema/40">ia.ts</span>
+          <span class="ml-auto px-3 text-bruma/50">TypeScript</span>
+        </div>
+        <div class="flex py-3 font-mono text-[10.5px] leading-[1.75]">
+          <div class="select-none px-3 text-right text-crema/20">
+            {code.map((_, i) => <div>{i + 1}</div>)}
+          </div>
+          <pre data-code class="min-h-[318px] flex-1 overflow-hidden whitespace-pre pr-3 text-crema/85">{code.join("\n")}</pre>
+        </div>
+      </div>
+      <div class={`absolute inset-x-0 bottom-0 h-[150px] bg-marino-deep p-3 font-mono text-[10px] ${card}`}>
+        <div class="flex items-center justify-between text-[8px] uppercase tracking-[0.14em] text-bruma/50">
+          <span>Terminal</span>
+          <span class="flex items-center gap-1.5"><span class="h-1.5 w-1.5 bg-ladrillo bw-blink"></span>deploy</span>
+        </div>
+        <div data-terminal class="mt-2 space-y-1 text-crema/80"></div>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+  import "@/scripts/service-visuals";
+</script>

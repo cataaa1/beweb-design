@@ -10,7 +10,8 @@
     "type-check": "astro check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{ts,js,json,css,md}\""
+    "format": "prettier --write \"**/*.{ts,js,json,css,md}\"",
+    "deploy:beta": "astro build && wrangler pages deploy dist --project-name beweb-beta --branch main --commit-dirty=true"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -26,6 +27,7 @@
     "prettier": "^3.6.2",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.24.1"
+    "typescript-eslint": "^8.24.1",
+    "wrangler": "^4.143.0"
   }
 }

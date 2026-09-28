@@ -17,21 +17,11 @@ export const filterButtonClass = (active: boolean) =>
 export const filterUnderlineClass = (active: boolean) =>
   "absolute bottom-0 left-0 h-px bg-ladrillo transition-all duration-500 " + (active ? "w-full" : "w-0");
 
-const WORK_LAYOUTS = [
-  "md:col-span-7",
-  "md:col-span-5 md:mt-40",
-  "md:col-span-5 md:col-start-2",
-  "md:col-span-6 md:mt-24",
-  "md:col-span-6",
-  "md:col-span-5 md:col-start-8 md:-mt-20",
-];
-
 export const REVEAL_BASE =
   "transition-[transform,opacity] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform";
 
-/** Grid placement of the i-th visible project card */
-export const workLayoutClass = (i: number, filtered: boolean) =>
-  REVEAL_BASE + " " + (filtered ? "md:col-span-6" : WORK_LAYOUTS[i % 6]);
+/** Two staggered columns: every second visible card sits lower, without affecting row heights */
+export const workLayoutClass = (i: number) => REVEAL_BASE + (i % 2 === 1 ? " md:relative md:top-40" : "");
 
 export const serviceIndexClass = (open: boolean) =>
   "font-mono text-xs transition-colors " + (open ? "text-ladrillo" : "text-crema/40");
@@ -69,7 +59,3 @@ export const stepDotClass = (on: boolean, done: boolean) =>
   "h-1.5 w-1.5 " + (on ? "bg-ladrillo" : done ? "bg-bruma" : "bg-crema/20");
 
 export const stepStatus = (on: boolean, done: boolean) => (on ? "en curso" : done ? "listo" : "pendiente");
-
-export const choiceClass = (active: boolean) =>
-  "px-3 py-3 text-left text-sm transition-colors " +
-  (active ? "bg-crema text-marino" : "bg-marino text-crema/70 hover:bg-marino-2 hover:text-crema");

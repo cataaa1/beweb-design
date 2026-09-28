@@ -8,6 +8,13 @@ interface Props {
 }
 
 const { project, index } = Astro.props;
+
+// The card shows a 16:10 window of a 1280px-wide full-page screenshot. On hover the image slides up
+// until its bottom reaches the window's bottom, at a speed that feels like scrolling the site.
+const visible = 1280 * (10 / 16);
+const shift = (1 - visible / project.imageHeight) * 100;
+// ~3s per 1280px of page, slow enough to actually look at it
+const scrollMs = Math.round(((project.imageHeight - visible) / 1280) * 3000);
 ---
 
 <a href={project.url} target="_blank" rel="noreferrer" data-project-card class="group block">
@@ -30,7 +37,10 @@ const { project, index } = Astro.props;
       <img
         src={project.image}
         alt={`Sitio de ${project.name}`}
-        class="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+        width="1280"
+        height={project.imageHeight}
+        style={`--shift: -${shift.toFixed(2)}%; --scroll-ms: ${scrollMs}ms;`}
+        class="absolute inset-x-0 top-0 h-auto w-full transition-transform duration-700 ease-in-out will-change-transform group-hover:[transform:translateY(var(--shift))] group-hover:[transition-duration:var(--scroll-ms)]"
         loading="lazy"
       />
       <div
@@ -45,13 +55,9 @@ const { project, index } = Astro.props;
     </div>
   </div>
 
-  <div class="mt-5 grid grid-cols-[1fr_auto] gap-x-6 gap-y-2">
+  <div class="mt-5 flex items-baseline justify-between gap-6">
     <h3 class="text-2xl font-medium tracking-[-0.03em] text-crema">{project.name}</h3>
-    <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50 pt-2">
-      {project.type}
-    </span>
-    <p class="max-w-md text-sm leading-relaxed text-crema/60">{project.summary}</p>
-    <span class="font-mono text-[11px] text-bruma/70 self-end text-right">Visitar sitio ↗</span>
+    <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50">{project.type}</span>
   </div>
 </a>
 

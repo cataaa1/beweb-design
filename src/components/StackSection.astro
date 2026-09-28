@@ -4,14 +4,16 @@ import { tools } from "@/data/beweb-data";
 
 <section id="stack" class="relative overflow-hidden bg-bruma text-marino">
   <div class="flex overflow-hidden border-y border-marino/15 py-8 md:py-10">
-    <div class="bw-marquee-slow flex shrink-0 whitespace-nowrap">
+    <!-- Driven by the script below: drifts on its own, speeds up / reverses with the page scroll and
+         leans into the motion. Falls back to the plain CSS marquee without JS or with reduced motion. -->
+    <div data-marquee class="bw-marquee-slow flex shrink-0 whitespace-nowrap will-change-transform">
       {
         [0, 1].map((dup) => (
           <span class="flex shrink-0 items-center" aria-hidden={dup === 1 ? "true" : "false"}>
             {tools.map((t) => (
               <span class="flex items-center text-5xl font-medium tracking-[-0.04em] md:text-7xl">
                 <span class="px-8">{t.name}</span>
-                <span class="h-3 w-3 bg-ladrillo" />
+                <span data-marquee-dot class="h-3 w-3 bg-ladrillo" />
               </span>
             ))}
           </span>
@@ -20,3 +22,52 @@ import { tools } from "@/data/beweb-data";
     </div>
   </div>
 </section>
+
+<script>
+  const track = document.querySelector<HTMLElement>("[data-marquee]")!;
+  const dots = [...track.querySelectorAll<HTMLElement>("[data-marquee-dot]")];
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reduce) {
+    track.classList.remove("bw-marquee-slow");
+    const CYCLE_S = 70; // seconds for one full copy at rest, same pace as the old CSS marquee
+    let half = track.scrollWidth / 2;
+    let x = 0;
+    let dir = -1; // -1 = moving left; flips with the scroll direction
+    let boost = 0; // extra px/s from scrolling, eases back to 0
+    let lastY = window.scrollY;
+    let last = performance.now();
+    let visible = false;
+
+    new ResizeObserver(() => (half = track.scrollWidth / 2)).observe(track);
+    new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(track);
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const dy = window.scrollY - lastY;
+        lastY = window.scrollY;
+        if (dy !== 0) dir = dy > 0 ? -1 : 1;
+        boost = Math.min(boost + Math.abs(dy) * 9, 1800);
+      },
+      { passive: true },
+    );
+
+    const frame = (now: number) => {
+      requestAnimationFrame(frame);
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      boost *= Math.pow(0.04, dt); // settles back to the resting drift in about a second
+      if (!visible) return;
+      const speed = half / CYCLE_S + boost;
+      x += dir * speed * dt;
+      if (x <= -half) x += half;
+      if (x > 0) x -= half;
+      const lean = Math.max(-8, Math.min(8, dir * -boost * 0.0045)); // skew into the direction of travel
+      track.style.transform = `translate3d(${x}px,0,0) skewX(${lean}deg)`;
+      const stretch = 1 + Math.min(boost / 1800, 1) * 2; // dots stretch into dashes at speed
+      for (const d of dots) d.style.transform = `scaleX(${stretch})`;
+    };
+    requestAnimationFrame(frame);
+  }
+</script>
