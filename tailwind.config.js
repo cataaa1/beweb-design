@@ -47,6 +47,11 @@ export default {
         "sidebar-accent-foreground": "hsl(var(--sidebar-accent-foreground))",
         "sidebar-border": "hsl(var(--sidebar-border))",
         "sidebar-ring": "hsl(var(--sidebar-ring))",
+        crema: "#EDE6D8",
+        marino: { DEFAULT: "#1B2433", 2: "#1F2F45", deep: "#141B27" },
+        ladrillo: "#B5473A",
+        acero: "#3E5C7E",
+        bruma: "#9CC2E0",
       },
       borderColor: {
         DEFAULT: "hsl(var(--border))",

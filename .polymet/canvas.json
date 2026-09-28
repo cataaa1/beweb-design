@@ -1,4 +1,57 @@
 {
   "schema_version": "1",
-  "nodes": []
+  "nodes": [
+    {
+      "id": "cn_kdclzl0v",
+      "type": "file",
+      "source": "/src/polymet/layouts/beweb-layout.tsx",
+      "entrypoint": "/src/polymet/examples/layouts/beweb-layout.render.tsx",
+      "description": "BeWeb site layout with header and footer",
+      "buildId": "7ef39023781baa8f246cf172192fa679:35c1cdf82adfaff300b7a77519f0735f77b0c7e3033f54bf96ab97402019558c4f06d44d",
+      "buildStatus": "SUCCESS",
+      "position": {
+        "x": 3000,
+        "y": 4000
+      },
+      "size": {
+        "width": 1009,
+        "height": 1122
+      }
+    },
+    {
+      "id": "cn_0niqees1",
+      "type": "file",
+      "source": "/src/polymet/pages/beweb-home.tsx",
+      "entrypoint": "/src/polymet/examples/pages/beweb-home.render.tsx",
+      "description": "BeWeb one-page site",
+      "buildId": "7347c025e887906810f8ccda2a8f6763:7d25cd3bb6b5eb793997e809347e247b7b0e0f74fb4a4d26d55d7b57b8ea0701a9163351",
+      "buildStatus": "SUCCESS",
+      "position": {
+        "x": 3000,
+        "y": 5168
+      },
+      "size": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    {
+      "id": "cn_wtme5rze",
+      "type": "file",
+      "source": "/src/polymet/prototypes/beweb-site.tsx",
+      "entrypoint": "/src/polymet/examples/prototypes/beweb-site.render.tsx",
+      "description": "BeWeb site prototype",
+      "slug": "dev-untitled-pro-wybtl2b7",
+      "buildId": "35af0026f5b0ebb23dc72911779b0716:caee19a14cebf33013648053225de49927654c28ecc07cf2614e113141f25d633e7d8984",
+      "buildStatus": "SUCCESS",
+      "position": {
+        "x": 4224,
+        "y": 5168
+      },
+      "size": {
+        "width": 1024,
+        "height": 768
+      }
+    }
+  ]
 }
