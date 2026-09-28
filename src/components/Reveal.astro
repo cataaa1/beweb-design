@@ -1,0 +1,27 @@
+---
+import { REVEAL_BASE } from "@/lib/classes";
+
+interface Props {
+  class?: string;
+  delay?: number;
+  y?: number;
+  as?: "div" | "li" | "span";
+  [attr: `data-${string}`]: string | undefined;
+}
+
+const { class: className, delay = 0, y = 28, as: Tag = "div", ...rest } = Astro.props;
+---
+
+<Tag
+  data-reveal
+  data-y={y}
+  class={className ? `${REVEAL_BASE} ${className}` : REVEAL_BASE}
+  style={`transition-delay: ${delay}ms; transform: translate3d(0,${y}px,0); opacity: 0;`}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<script>
+  import "@/scripts/reveal";
+</script>

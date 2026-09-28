@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string;
+  /** Stroke weight in viewBox units */
+  weight?: number;
+}
+
+const { class: className = "h-[26px] w-auto", weight = 2.6 } = Astro.props;
+---
+
+<!-- BeWeb wordmark — "be" in Ladrillo, "Web" in Bruma -->
+<svg
+  viewBox="0 0 94 30"
+  class={className}
+  fill="none"
+  stroke-width={weight}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role="img"
+  aria-label="BeWeb"
+>
+  <g stroke="#B5473A">
+    <path d="M3.5 4 V26"></path>
+    <circle cx="10" cy="20" r="6.2"></circle>
+    <path d="M20 20 H32.4 A6.2 6.2 0 1 0 30.6 24.4"></path>
+  </g>
+  <g stroke="#9CC2E0">
+    <path d="M36 4.5 L42 25.5 L48 10 L54 25.5 L60 4.5"></path>
+    <path d="M64 20 H76.4 A6.2 6.2 0 1 0 74.6 24.4"></path>
+    <path d="M81 4 V26"></path>
+    <circle cx="87.5" cy="20" r="6.2"></circle>
+  </g>
+</svg>

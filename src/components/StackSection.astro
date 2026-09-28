@@ -1,0 +1,22 @@
+---
+import { tools } from "@/data/beweb-data";
+---
+
+<section id="stack" class="relative overflow-hidden bg-bruma text-marino">
+  <div class="flex overflow-hidden border-y border-marino/15 py-8 md:py-10">
+    <div class="bw-marquee-slow flex shrink-0 whitespace-nowrap">
+      {
+        [0, 1].map((dup) => (
+          <span class="flex shrink-0 items-center" aria-hidden={dup === 1 ? "true" : "false"}>
+            {tools.map((t) => (
+              <span class="flex items-center text-5xl font-medium tracking-[-0.04em] md:text-7xl">
+                <span class="px-8">{t.name}</span>
+                <span class="h-3 w-3 bg-ladrillo" />
+              </span>
+            ))}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</section>

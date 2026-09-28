@@ -1,0 +1,112 @@
+---
+import BewebLogo from "./BewebLogo.astro";
+import Icon from "./Icon.astro";
+import { navLinks } from "@/data/beweb-data";
+import { headerClass, mobileMenuClass } from "@/lib/classes";
+---
+
+<header data-header class={headerClass(false)}>
+  <div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 md:px-10">
+    <a href="#top" class="text-crema" aria-label="BeWeb inicio">
+      <BewebLogo />
+    </a>
+
+    <nav class="hidden items-center gap-8 lg:flex">
+      {
+        navLinks.map((l, i) => (
+          <a
+            href={l.href}
+            class="group relative font-mono text-[11px] uppercase tracking-[0.14em] text-crema/60 transition-colors hover:text-crema"
+          >
+            <span class="mr-1.5 text-bruma/40">0{i + 1}</span>{l.label}<span class="absolute -bottom-1 left-0 h-px w-0 bg-ladrillo transition-all duration-300 group-hover:w-full" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <span class="hidden font-mono text-[11px] tracking-[0.1em] text-crema/50 xl:inline">
+        MDP <span data-clock></span>
+      </span>
+      <a
+        href="#contacto"
+        class="group hidden items-center gap-2 bg-ladrillo px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-crema transition-colors hover:bg-crema hover:text-marino sm:inline-flex"
+      >
+        Hablemos
+        <Icon
+          name="arrow-up-right"
+          class="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+        />
+      </a>
+      <button
+        type="button"
+        data-menu-toggle
+        class="grid h-10 w-10 place-items-center border border-bruma/20 text-crema lg:hidden"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+      >
+        <Icon name="menu" class="h-4 w-4" data-menu-icon="closed" />
+        <Icon name="x" class="hidden h-4 w-4" data-menu-icon="open" />
+      </button>
+    </div>
+  </div>
+
+  <div data-mobile-menu class={mobileMenuClass(false)}>
+    <nav class="flex flex-col px-5 py-4">
+      {
+        navLinks.map((l, i) => (
+          <a
+            href={l.href}
+            class="flex items-baseline justify-between border-b border-bruma/10 py-4 text-2xl font-medium tracking-tight text-crema"
+          >
+            {l.label}
+            <span class="font-mono text-xs text-bruma/50">0{i + 1}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { headerClass, mobileMenuClass } from "@/lib/classes";
+
+  const header = document.querySelector<HTMLElement>("[data-header]")!;
+  const menu = header.querySelector<HTMLElement>("[data-mobile-menu]")!;
+  const toggle = header.querySelector<HTMLButtonElement>("[data-menu-toggle]")!;
+  const clock = header.querySelector<HTMLElement>("[data-clock]")!;
+
+  let scrolled: boolean | null = null;
+  const onScroll = () => {
+    const next = window.scrollY > 24;
+    if (next === scrolled) return;
+    scrolled = next;
+    header.className = headerClass(next);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  let open = false;
+  const setOpen = (next: boolean) => {
+    open = next;
+    menu.className = mobileMenuClass(open);
+    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.querySelectorAll("[data-menu-icon]").forEach((icon) => {
+      const isOpenIcon = icon.getAttribute("data-menu-icon") === "open";
+      icon.classList.toggle("hidden", isOpenIcon !== open);
+    });
+  };
+  toggle.addEventListener("click", () => setOpen(!open));
+  menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+
+  const tick = () => {
+    clock.textContent = new Date().toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "America/Argentina/Buenos_Aires",
+    });
+  };
+  tick();
+  setInterval(tick, 30000);
+</script>

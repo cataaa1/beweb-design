@@ -1,0 +1,88 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import SplitLines from "./SplitLines.astro";
+import { projects } from "@/data/beweb-data";
+import { filterButtonClass, filterUnderlineClass, workLayoutClass } from "@/lib/classes";
+
+const FILTERS = ["Todos", "Institucional", "E-commerce", "Landing"];
+const count = (f: string) => (f === "Todos" ? projects.length : projects.filter((p) => p.type === f).length);
+---
+
+<section id="proyectos" class="relative bg-marino pb-28 md:pb-40">
+  <div class="mx-auto max-w-[1440px] px-5 md:px-10">
+    <div class="flex flex-col gap-8 border-t border-bruma/15 pt-10 md:flex-row md:items-end md:justify-between">
+      <h2 class="text-5xl font-medium tracking-[-0.045em] text-crema md:text-7xl">
+        <SplitLines lines={["Sitios que construimos"]} />
+      </h2>
+      <div class="flex flex-wrap gap-x-6 gap-y-2" role="tablist">
+        {
+          FILTERS.map((f) => (
+            <button
+              type="button"
+              role="tab"
+              data-filter={f}
+              aria-selected={f === "Todos" ? "true" : "false"}
+              class={filterButtonClass(f === "Todos")}
+            >
+              {f}<sup class="ml-1 text-[9px] text-bruma/60">{count(f)}</sup><span data-filter-underline class={filterUnderlineClass(f === "Todos")} />
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-12">
+      {
+        projects.map((p, i) => (
+          <div
+            data-reveal
+            data-y="28"
+            data-project-type={p.type}
+            class={workLayoutClass(i, false)}
+            style={`transition-delay: ${(i % 2) * 120}ms; transform: translate3d(0,28px,0); opacity: 0;`}
+          >
+            <ProjectCard project={p} index={i} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { filterButtonClass, filterUnderlineClass, workLayoutClass } from "@/lib/classes";
+  import { hideReveal, observeReveal } from "@/scripts/reveal";
+
+  const section = document.getElementById("proyectos")!;
+  const buttons = [...section.querySelectorAll<HTMLButtonElement>("[data-filter]")];
+  const cards = [...section.querySelectorAll<HTMLElement>("[data-project-type]")];
+
+  const apply = (filter: string) => {
+    buttons.forEach((b) => {
+      const active = b.dataset.filter === filter;
+      b.className = filterButtonClass(active);
+      b.setAttribute("aria-selected", String(active));
+      b.querySelector("[data-filter-underline]")!.className = filterUnderlineClass(active);
+    });
+
+    let i = 0;
+    for (const card of cards) {
+      const show = filter === "Todos" || card.dataset.projectType === filter;
+      if (!show) {
+        card.hidden = true;
+        continue;
+      }
+      // Cards that come back were unmounted in the React version, so they reveal again
+      if (card.hidden) {
+        card.hidden = false;
+        hideReveal(card);
+        observeReveal(card);
+      }
+      card.className = workLayoutClass(i, filter !== "Todos");
+      card.style.transitionDelay = `${(i % 2) * 120}ms`;
+      i++;
+    }
+  };
+
+  buttons.forEach((b) => b.addEventListener("click", () => apply(b.dataset.filter!)));
+</script>

@@ -1,0 +1,121 @@
+---
+import { visualPanelClass } from "@/lib/classes";
+
+// Positioning of each figure; the active/inactive part comes from visualPanelClass
+const LAYOUTS = [
+  "absolute inset-10 flex flex-col gap-3",
+  "absolute inset-10 flex flex-col justify-end gap-3",
+  "absolute inset-10",
+  "absolute inset-10",
+];
+
+const FUNNEL = [
+  { l: "Visitas", w: "w-[92%]", c: "bg-acero" },
+  { l: "Interés", w: "w-[72%]", c: "bg-bruma/70" },
+  { l: "Consultas", w: "w-[52%]", c: "bg-crema/80" },
+  { l: "Ventas", w: "w-[32%]", c: "bg-ladrillo" },
+];
+
+const NODES = [
+  { x: 150, y: 70, l: "tu web", c: "#EDE6D8" },
+  { x: 70, y: 190, l: "clientes", c: "#3E5C7E" },
+  { x: 230, y: 190, l: "ventas", c: "#3E5C7E" },
+  { x: 150, y: 310, l: "IA", c: "#B5473A" },
+];
+
+const block = "bg-bruma/15";
+---
+
+<div
+  data-service-visual
+  class="relative aspect-[4/5] w-full overflow-hidden border border-bruma/15 bg-marino bw-dots-bg"
+>
+  <div class="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.14em] text-bruma/50">
+    fig. 0<span data-fig>1</span>
+  </div>
+
+  <!-- 01 Institucional — layout wireframe -->
+  <div data-panel="0" data-layout={LAYOUTS[0]} class={visualPanelClass(LAYOUTS[0], true)}>
+    <div class="flex items-center justify-between">
+      <div class="h-3 w-16 bg-crema/70"></div>
+      <div class="flex gap-2">
+        <div class={`${block} h-2 w-8`}></div>
+        <div class={`${block} h-2 w-8`}></div>
+        <div class={`${block} h-2 w-8`}></div>
+      </div>
+    </div>
+    <div class="mt-6 space-y-2">
+      <div class="h-7 w-[85%] bg-crema/80"></div>
+      <div class="h-7 w-[60%] bg-crema/80"></div>
+    </div>
+    <div class="mt-3 h-[38%] w-full bg-acero"></div>
+    <div class="grid flex-1 grid-cols-3 gap-2">
+      <div class={block}></div>
+      <div class={block}></div>
+      <div class="bg-ladrillo/80"></div>
+    </div>
+  </div>
+
+  <!-- 03 Tiendas online — product grid + cart -->
+  <div data-panel="2" data-layout={LAYOUTS[2]} class={visualPanelClass(LAYOUTS[2], false)}>
+    <div class="grid h-full grid-cols-2 gap-3">
+      {
+        [0, 1, 2, 3].map((i) => (
+          <div class="flex flex-col gap-2 border border-bruma/10 p-2">
+            <div class:list={["flex-1", i === 1 ? "bg-ladrillo/80" : "bg-acero/70"]} />
+            <div class="h-2 w-3/4 bg-crema/60" />
+            <div class={`${block} h-2 w-1/3`} />
+          </div>
+        ))
+      }
+    </div>
+    <div class="absolute -right-2 bottom-8 w-44 border border-crema/20 bg-marino-2 p-3 shadow-2xl">
+      <div class="flex items-center justify-between font-mono text-[10px] text-crema/70">
+        <span>Carrito</span>
+        <span>3</span>
+      </div>
+      <div class="mt-3 space-y-1.5">
+        <div class={`${block} h-2 w-full`}></div>
+        <div class={`${block} h-2 w-4/5`}></div>
+      </div>
+      <div class="mt-3 bg-ladrillo py-1.5 text-center font-mono text-[10px] text-crema">Pagar $ 48.900</div>
+    </div>
+  </div>
+
+  <!-- 04 Desarrollo — connected pieces -->
+  <div data-panel="3" data-layout={LAYOUTS[3]} class={visualPanelClass(LAYOUTS[3], false)}>
+    <svg viewBox="0 0 300 380" class="h-full w-full">
+      <g stroke="#9CC2E0" stroke-opacity="0.5" fill="none" stroke-width="1.2">
+        <path class="bw-dash" d="M150 70 L70 190"></path>
+        <path class="bw-dash" d="M150 70 L230 190"></path>
+        <path class="bw-dash" d="M70 190 L150 310"></path>
+        <path class="bw-dash" d="M230 190 L150 310"></path>
+      </g>
+      {
+        NODES.map((n) => (
+          <g>
+            <rect x={n.x - 44} y={n.y - 20} width="88" height="40" fill="#1F2F45" stroke={n.c} stroke-width="1.2" />
+            <rect x={n.x - 36} y={n.y - 4} width="8" height="8" fill={n.c} />
+            <text x={n.x - 22} y={n.y + 4} fill="#EDE6D8" font-size="11" font-family="Space Mono">{n.l}</text>
+          </g>
+        ))
+      }
+    </svg>
+  </div>
+
+  <!-- 02 Landing pages — conversion funnel -->
+  <div data-panel="1" data-layout={LAYOUTS[1]} class={visualPanelClass(LAYOUTS[1], false)}>
+    {
+      FUNNEL.map((b, i) => (
+        <div class="flex items-center gap-3">
+          <span class="w-16 shrink-0 font-mono text-[10px] text-crema/60">{b.l}</span>
+          <div
+            data-funnel-bar
+            class:list={["h-10 origin-left transition-transform duration-1000", b.w, b.c]}
+            style={`transform: scaleX(0); transition-delay: ${i * 120}ms;`}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>

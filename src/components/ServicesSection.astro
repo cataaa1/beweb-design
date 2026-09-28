@@ -1,0 +1,107 @@
+---
+import Icon from "./Icon.astro";
+import ServiceVisual from "./ServiceVisual.astro";
+import SplitLines from "./SplitLines.astro";
+import { services } from "@/data/beweb-data";
+import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClass } from "@/lib/classes";
+---
+
+<section id="servicios" class="relative bg-marino-2 py-28 md:py-40">
+  <div class="mx-auto max-w-[1440px] px-5 md:px-10">
+    <div class="grid grid-cols-12 gap-y-10">
+      <h2
+        class="col-span-12 text-5xl font-medium leading-[0.95] tracking-[-0.045em] text-crema md:col-span-7 md:text-7xl"
+      >
+        <SplitLines lines={["Lo que", "hacemos."]} />
+      </h2>
+      <p class="col-span-12 self-end text-base leading-relaxed text-crema/60 md:col-span-4 md:col-start-9">
+        Soluciones digitales completas, desde la idea hasta la implementación.
+      </p>
+    </div>
+
+    <div class="mt-20 grid grid-cols-12 gap-x-10">
+      <div class="col-span-12 lg:col-span-7">
+        {
+          services.map((s, i) => {
+            const open = i === 0;
+            return (
+              <div data-service={i} class="border-t border-bruma/15 last:border-b">
+                <button
+                  type="button"
+                  data-service-trigger
+                  aria-expanded={open ? "true" : "false"}
+                  class="group flex w-full items-baseline gap-6 py-7 text-left"
+                >
+                  <span data-service-index class={serviceIndexClass(open)}>
+                    {s.index}
+                  </span>
+                  <span data-service-title class={serviceTitleClass(open)}>
+                    {s.title}
+                  </span>
+                  <Icon name="plus" class={servicePlusClass(open)} data-service-plus="" />
+                </button>
+                <div data-service-body class={serviceBodyClass(open)}>
+                  <div class="overflow-hidden">
+                    <div class="grid gap-8 pb-10 pl-10 md:grid-cols-2 md:pl-12">
+                      <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
+                      <div class="space-y-5">
+                        <ul class="space-y-1.5">
+                          {s.deliverables.map((d) => (
+                            <li class="flex items-center gap-3 text-sm text-crema/70">
+                              <span class="h-1 w-3 bg-bruma/50" />
+                              {d}
+                            </li>
+                          ))}
+                        </ul>
+                        <p class="font-mono text-[11px] text-bruma/70">{s.tools.join("  ·  ")}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <div class="col-span-12 mt-12 lg:col-span-5 lg:mt-0">
+        <div class="lg:sticky lg:top-28">
+          <ServiceVisual />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClass, visualPanelClass } from "@/lib/classes";
+
+  const section = document.getElementById("servicios")!;
+  const items = [...section.querySelectorAll<HTMLElement>("[data-service]")];
+  const visual = section.querySelector<HTMLElement>("[data-service-visual]")!;
+  const panels = [...visual.querySelectorAll<HTMLElement>("[data-panel]")];
+  const fig = visual.querySelector<HTMLElement>("[data-fig]")!;
+  const bars = [...visual.querySelectorAll<HTMLElement>("[data-funnel-bar]")];
+  let active = 0;
+
+  const setActive = (next: number) => {
+    if (next === active) return;
+    active = next;
+    items.forEach((item, i) => {
+      const open = i === active;
+      item.querySelector("[data-service-trigger]")!.setAttribute("aria-expanded", String(open));
+      item.querySelector("[data-service-index]")!.className = serviceIndexClass(open);
+      item.querySelector("[data-service-title]")!.className = serviceTitleClass(open);
+      item.querySelector("[data-service-plus]")!.setAttribute("class", `lucide lucide-plus ${servicePlusClass(open)}`);
+      item.querySelector("[data-service-body]")!.className = serviceBodyClass(open);
+    });
+    panels.forEach((p) => (p.className = visualPanelClass(p.dataset.layout!, Number(p.dataset.panel) === active)));
+    fig.textContent = String(active + 1);
+    bars.forEach((b) => (b.style.transform = active === 1 ? "scaleX(1)" : "scaleX(0)"));
+  };
+
+  items.forEach((item, i) => {
+    item.addEventListener("mouseenter", () => setActive(i));
+    item.querySelector("[data-service-trigger]")!.addEventListener("click", () => setActive(i));
+  });
+</script>

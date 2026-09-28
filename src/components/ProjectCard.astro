@@ -1,0 +1,73 @@
+---
+import Icon from "./Icon.astro";
+import type { Project } from "@/data/beweb-data";
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<a href={project.url} target="_blank" rel="noreferrer" data-project-card class="group block">
+  <div
+    data-tilt
+    class="relative overflow-hidden border border-bruma/15 bg-marino-2 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out [transform-style:preserve-3d]"
+  >
+    <div class="flex items-center gap-3 border-b border-bruma/10 px-3 py-2">
+      <span class="flex gap-1">
+        <span class="h-2 w-2 bg-ladrillo/80"></span>
+        <span class="h-2 w-2 bg-bruma/30"></span>
+        <span class="h-2 w-2 bg-bruma/30"></span>
+      </span>
+      <span class="flex-1 truncate font-mono text-[10px] text-crema/40">
+        {project.domain}
+      </span>
+      <span class="font-mono text-[10px] text-crema/40">{String(index + 1).padStart(2, "0")}</span>
+    </div>
+    <div class="relative aspect-[16/10] overflow-hidden">
+      <img
+        src={project.image}
+        alt={`Sitio de ${project.name}`}
+        class="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+        loading="lazy"
+      />
+      <div
+        class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(420px_circle_at_var(--gx,50%)_var(--gy,50%),rgba(237,230,216,0.16),transparent_60%)]"
+      >
+      </div>
+      <span
+        class="absolute bottom-3 right-3 grid h-11 w-11 translate-y-3 place-items-center bg-ladrillo text-crema opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        <Icon name="arrow-up-right" class="h-4 w-4" />
+      </span>
+    </div>
+  </div>
+
+  <div class="mt-5 grid grid-cols-[1fr_auto] gap-x-6 gap-y-2">
+    <h3 class="text-2xl font-medium tracking-[-0.03em] text-crema">{project.name}</h3>
+    <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50 pt-2">
+      {project.type}
+    </span>
+    <p class="max-w-md text-sm leading-relaxed text-crema/60">{project.summary}</p>
+    <span class="font-mono text-[11px] text-bruma/70 self-end text-right">Visitar sitio ↗</span>
+  </div>
+</a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-project-card]").forEach((card) => {
+    const frame = card.querySelector<HTMLElement>("[data-tilt]")!;
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      frame.style.transform = `perspective(1100px) rotateY(${px * 7}deg) rotateX(${py * -7}deg) translateZ(0)`;
+      frame.style.setProperty("--gx", `${(px + 0.5) * 100}%`);
+      frame.style.setProperty("--gy", `${(py + 0.5) * 100}%`);
+    });
+    card.addEventListener("pointerleave", () => {
+      frame.style.transform = "perspective(1100px) rotateY(0deg) rotateX(0deg)";
+    });
+  });
+</script>

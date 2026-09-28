@@ -1,0 +1,269 @@
+---
+import Icon from "./Icon.astro";
+import SplitLines from "./SplitLines.astro";
+import { choiceClass } from "@/lib/classes";
+
+const TYPES = ["Institucional", "Landing page", "Tienda online", "A medida"];
+const TIMELINES = ["Lo antes posible", "En 1 mes", "En 2–3 meses", "Sin apuro"];
+
+const fieldLabel = "group block border-b border-bruma/20 pb-3 transition-colors focus-within:border-crema";
+const fieldCaption =
+  "font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50 group-focus-within:text-ladrillo";
+const fieldInput = "mt-2 block w-full bg-transparent text-xl text-crema outline-none placeholder:text-crema/25";
+
+const choices = [
+  { key: "type", label: "¿Qué necesitás?", options: TYPES, value: "Institucional" },
+  { key: "timeline", label: "¿Para cuándo?", options: TIMELINES, value: "En 1 mes" },
+];
+---
+
+<section id="contacto" class="relative overflow-hidden bg-marino py-28 md:py-40">
+  <div class="mx-auto grid max-w-[1440px] grid-cols-12 gap-x-10 gap-y-16 px-5 md:px-10">
+    <div class="col-span-12 lg:col-span-5">
+      <h2 class="text-6xl font-medium uppercase leading-[0.88] tracking-[-0.055em] text-crema md:text-8xl">
+        <SplitLines lines={["Empecemos", "tu", "proyecto."]} />
+      </h2>
+      <p class="mt-8 max-w-sm text-lg leading-snug text-crema/60">Contanos tu idea y la hacemos realidad.</p>
+      <div class="mt-10 space-y-6">
+        <a
+          href="mailto:hola@beweb.com.ar"
+          class="group inline-flex items-center gap-3 text-2xl tracking-[-0.02em] text-crema md:text-3xl"
+        >
+          <span class="relative">hola@beweb.com.ar<span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ladrillo transition-transform duration-500 group-hover:scale-x-100"></span></span>
+          <Icon name="arrow-right" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+        </a>
+        <div class="grid grid-cols-2 gap-6 font-mono text-[11px] leading-5 text-crema/50">
+          <div>
+            Ubicación<br />
+            <span class="text-crema/80">Mar del Plata, Argentina</span>
+          </div>
+          <div>
+            Tiempo de respuesta<br />
+            <span class="text-crema/80">24hs hábiles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-12 lg:col-span-6 lg:col-start-7">
+      <!-- Wrapper owns [hidden]: the panel's own `flex` class would override it -->
+      <div data-contact-sent hidden class="h-full">
+      <div
+        class="flex h-full min-h-[420px] flex-col justify-center border border-bruma/15 bg-marino-2 p-10 animate-in fade-in zoom-in-95 duration-500"
+      >
+        <span class="grid h-12 w-12 place-items-center bg-ladrillo text-crema">
+          <Icon name="check" class="h-5 w-5" />
+        </span>
+        <p data-contact-thanks class="mt-8 text-3xl font-medium tracking-[-0.03em] text-crema">Gracias.</p>
+        <p class="mt-3 max-w-sm text-crema/60">Respondemos dentro de las 24hs hábiles con los próximos pasos.</p>
+        <button
+          type="button"
+          data-contact-again
+          class="mt-10 self-start font-mono text-[11px] uppercase tracking-[0.14em] text-bruma hover:text-crema"
+        >
+          Enviar otro mensaje
+        </button>
+      </div>
+      </div>
+
+      <form data-contact-form class="space-y-10" aria-label="Formulario de contacto">
+        <input type="hidden" name="website_id" value="beweb" />
+        <input type="text" name="_hp_field" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="grid gap-10 sm:grid-cols-2">
+          <label for="name" class={fieldLabel}>
+            <span class={fieldCaption}>Nombre</span>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              minlength="2"
+              maxlength="100"
+              autocomplete="name"
+              class={fieldInput}
+            />
+          </label>
+          <label for="email" class={fieldLabel}>
+            <span class={fieldCaption}>Email</span>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              maxlength="254"
+              autocomplete="email"
+              class={fieldInput}
+            />
+          </label>
+        </div>
+        <label for="phone" class={fieldLabel}>
+          <span class={fieldCaption}>Celular (opcional)</span>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            maxlength="30"
+            pattern="[0-9+\-\s()]{7,30}"
+            autocomplete="tel"
+            class={fieldInput}
+          />
+        </label>
+        {
+          choices.map((c) => (
+            <fieldset data-choice={c.key} data-value={c.value}>
+              <legend class="font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50">{c.label}</legend>
+              <div class="mt-3 grid grid-cols-2 gap-px bg-bruma/15 sm:grid-cols-4">
+                {c.options.map((o) => (
+                  <button
+                    type="button"
+                    data-option={o}
+                    aria-pressed={o === c.value ? "true" : "false"}
+                    class={choiceClass(o === c.value)}
+                  >
+                    {o}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          ))
+        }
+        <label for="message" class="group block border-b border-bruma/20 pb-3 focus-within:border-crema">
+          <span class={fieldCaption}>Mensaje</span>
+          <textarea
+            id="message"
+            name="message"
+            required
+            minlength="10"
+            maxlength="2000"
+            rows="3"
+            class="mt-2 block w-full resize-none bg-transparent text-lg text-crema outline-none"></textarea>
+        </label>
+        <div data-turnstile></div>
+        <p data-contact-error role="alert" hidden class="border-l-2 border-ladrillo pl-4 text-sm text-crema/80"></p>
+        <button
+          type="submit"
+          data-contact-submit
+          class="group relative flex w-full items-center justify-between overflow-hidden bg-ladrillo px-6 py-5 text-left text-crema disabled:opacity-70"
+        >
+          <span
+            class="absolute inset-0 origin-bottom scale-y-0 bg-crema transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+          ></span>
+          <span
+            data-contact-submit-label
+            class="relative text-xl font-medium tracking-[-0.02em] transition-colors duration-300 group-hover:text-marino"
+            >Hacé despegar tu proyecto</span
+          >
+          <Icon
+            name="arrow-right"
+            class="relative h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:text-marino"
+          />
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { choiceClass } from "@/lib/classes";
+
+  const FORM_ENDPOINT = "https://formpost.rollpix.app/submit";
+  const TURNSTILE_SITEKEY = "0x4AAAAAACrCJNaPC_Rlf76n";
+  const RATE_LIMIT_MS = 30000;
+  const SUBMIT_LABEL = "Hacé despegar tu proyecto";
+
+  interface Turnstile {
+    render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+    reset: (id?: string) => void;
+  }
+
+  const w = window as Window & { turnstile?: Turnstile };
+
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]")!;
+  const sent = document.querySelector<HTMLElement>("[data-contact-sent]")!;
+  const thanks = sent.querySelector<HTMLElement>("[data-contact-thanks]")!;
+  const again = sent.querySelector<HTMLButtonElement>("[data-contact-again]")!;
+  const errorBox = form.querySelector<HTMLElement>("[data-contact-error]")!;
+  const submit = form.querySelector<HTMLButtonElement>("[data-contact-submit]")!;
+  const submitLabel = form.querySelector<HTMLElement>("[data-contact-submit-label]")!;
+  const turnstileBox = form.querySelector<HTMLElement>("[data-turnstile]")!;
+
+  // Choice groups ("¿Qué necesitás?", "¿Para cuándo?")
+  form.querySelectorAll<HTMLFieldSetElement>("[data-choice]").forEach((group) => {
+    const options = [...group.querySelectorAll<HTMLButtonElement>("[data-option]")];
+    options.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        group.dataset.value = btn.dataset.option;
+        options.forEach((o) => {
+          const active = o === btn;
+          o.setAttribute("aria-pressed", String(active));
+          o.className = choiceClass(active);
+        });
+      }),
+    );
+  });
+  const choice = (key: string) => form.querySelector<HTMLElement>(`[data-choice="${key}"]`)!.dataset.value;
+
+  // Cloudflare Turnstile (script loaded with render=explicit in the layout)
+  let widgetId: string | null = null;
+  const mountTurnstile = () => {
+    if (!w.turnstile) {
+      setTimeout(mountTurnstile, 200);
+      return;
+    }
+    widgetId = w.turnstile.render(turnstileBox, { sitekey: TURNSTILE_SITEKEY, theme: "dark", language: "es" });
+  };
+  mountTurnstile();
+  const resetTurnstile = () => {
+    if (widgetId && w.turnstile) w.turnstile.reset(widgetId);
+  };
+
+  const setError = (text: string) => {
+    errorBox.textContent = text;
+    errorBox.hidden = !text;
+  };
+
+  const setSending = (sending: boolean) => {
+    submit.disabled = sending;
+    submitLabel.textContent = sending ? "Enviando…" : SUBMIT_LABEL;
+  };
+
+  let lastSubmit = 0;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    if (now - lastSubmit < RATE_LIMIT_MS) {
+      const remaining = Math.ceil((RATE_LIMIT_MS - (now - lastSubmit)) / 1000);
+      setError(`Esperá ${remaining} segundos antes de enviar otro mensaje.`);
+      return;
+    }
+    lastSubmit = now;
+    setError("");
+    setSending(true);
+
+    // FormPost only knows name/email/phone/message, so the choices travel inside the message
+    const data = new FormData(form);
+    data.set("message", `Necesita: ${choice("type")}\nPara cuándo: ${choice("timeline")}\n\n${data.get("message") ?? ""}`);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: "POST", body: data });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || !result.success) throw new Error(result.message || "Error al enviar");
+      const name = String(data.get("name") ?? "");
+      thanks.textContent = `Gracias${name ? `, ${name.split(" ")[0]}` : ""}.`;
+      form.hidden = true;
+      sent.hidden = false;
+    } catch {
+      setError("Hubo un error al enviar el mensaje. Intentá escribirnos a hola@beweb.com.ar");
+    } finally {
+      setSending(false);
+      resetTurnstile();
+    }
+  });
+
+  again.addEventListener("click", () => {
+    form.querySelector<HTMLTextAreaElement>("#message")!.value = "";
+    setError("");
+    sent.hidden = true;
+    form.hidden = false;
+  });
+</script>

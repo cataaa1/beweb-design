@@ -1,0 +1,58 @@
+---
+import { stats } from "@/data/beweb-data";
+---
+
+<section class="bg-marino-deep pb-28 md:pb-40">
+  <div
+    data-stats
+    class="mx-auto grid max-w-[1440px] grid-cols-2 border-t border-bruma/15 px-5 md:grid-cols-4 md:px-10"
+  >
+    {
+      stats.map((s, i) => (
+        <div
+          data-stat
+          class="border-bruma/15 py-10 pr-6 md:border-l md:pl-8 md:first:border-l-0 md:first:pl-0"
+          style={`opacity: 0; transform: translateY(20px); transition: all 900ms cubic-bezier(0.16,1,0.3,1) ${i * 100}ms;`}
+        >
+          <div class="text-6xl font-medium tracking-[-0.05em] text-crema md:text-8xl">
+            <span class="tabular-nums">
+              <span data-counter={s.value}>0</span><span class="text-ladrillo">{s.suffix}</span>
+            </span>
+          </div>
+          <div class="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50">{s.label}</div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-stats]")!;
+
+  const count = (el: HTMLElement) => {
+    const value = Number(el.dataset.counter);
+    const start = performance.now();
+    const dur = 1600;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 4);
+      el.textContent = String(Math.round(eased * value));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const obs = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      obs.disconnect();
+      root.querySelectorAll<HTMLElement>("[data-stat]").forEach((stat) => {
+        stat.style.opacity = "1";
+        stat.style.transform = "none";
+      });
+      root.querySelectorAll<HTMLElement>("[data-counter]").forEach(count);
+    },
+    { threshold: 0.3 },
+  );
+  obs.observe(root);
+</script>

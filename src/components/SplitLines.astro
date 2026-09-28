@@ -1,0 +1,30 @@
+---
+interface Props {
+  lines: string[];
+  class?: string;
+  lineClass?: string;
+  delay?: number;
+}
+
+const { lines, class: className, lineClass, delay = 0 } = Astro.props;
+---
+
+<span data-split class:list={["block", className]}>
+  {
+    lines.map((line, i) => (
+      <span class="block overflow-hidden pb-[0.06em]">
+        <span
+          data-split-line
+          class:list={["block transition-transform duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)]", lineClass]}
+          style={`transform: translate3d(0,110%,0); transition-delay: ${delay + i * 90}ms;`}
+        >
+          {line}
+        </span>
+      </span>
+    ))
+  }
+</span>
+
+<script>
+  import "@/scripts/reveal";
+</script>

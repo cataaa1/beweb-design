@@ -1,0 +1,23 @@
+---
+interface Props {
+  class?: string;
+  cell?: number;
+  speed?: number;
+  /** Fades the field into the background at the top and bottom edges */
+  fade?: boolean;
+}
+
+const { class: className, cell = 11, speed = 1, fade = true } = Astro.props;
+---
+
+<canvas
+  data-pixel-field
+  data-cell={cell}
+  data-speed={speed}
+  data-fade={String(fade)}
+  class:list={["block h-full w-full", className]}
+  aria-hidden="true"></canvas>
+
+<script>
+  import "@/scripts/pixel-field";
+</script>

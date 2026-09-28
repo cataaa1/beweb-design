@@ -1,0 +1,63 @@
+<div
+  data-ticker
+  class="w-[280px] border border-bruma/15 bg-marino/85 font-mono text-[11px] leading-relaxed text-crema/80 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] backdrop-blur-md"
+>
+  <div
+    class="flex items-center justify-between border-b border-bruma/10 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-bruma/60"
+  >
+    <span>beweb / tu proyecto</span>
+    <span class="flex items-center gap-1.5">
+      <span class="h-1.5 w-1.5 bg-ladrillo bw-blink"></span>
+      en vivo
+    </span>
+  </div>
+  <ul data-ticker-list class="h-[132px] space-y-0.5 overflow-hidden px-3 py-2.5">
+    <li data-ticker-caret>
+      <span class="text-ladrillo">›</span>
+      <span class="inline-block h-3 w-1.5 translate-y-0.5 bg-crema/70 bw-blink"></span>
+    </li>
+  </ul>
+</div>
+
+<script>
+  const LINES = [
+    { cmd: "Conocer tu negocio", out: "listo" },
+    { cmd: "Diseño aprobado", out: "listo" },
+    { cmd: "Textos y fotos", out: "listo" },
+    { cmd: "Versión para celulares", out: "listo" },
+    { cmd: "Visible en Google", out: "listo" },
+    { cmd: "Sitio publicado", out: "online" },
+  ];
+
+  document.querySelectorAll<HTMLElement>("[data-ticker]").forEach((ticker) => {
+    const list = ticker.querySelector<HTMLUListElement>("[data-ticker-list]")!;
+    const caret = list.querySelector<HTMLLIElement>("[data-ticker-caret]")!;
+    let step = 0;
+
+    const line = ({ cmd, out }: (typeof LINES)[number]) => {
+      const li = document.createElement("li");
+      li.className = "flex justify-between gap-3 animate-in fade-in slide-in-from-bottom-1 duration-300";
+      const left = document.createElement("span");
+      left.className = "truncate";
+      left.innerHTML = '<span class="text-ladrillo">›</span> ';
+      left.append(cmd);
+      const right = document.createElement("span");
+      right.className = out === "online" ? "text-bruma" : "text-crema/40";
+      right.textContent = out;
+      li.append(left, right);
+      return li;
+    };
+
+    setInterval(() => {
+      step = (step + 1) % (LINES.length + 2);
+      if (step === 0) {
+        list.replaceChildren(caret);
+        return;
+      }
+      if (step <= LINES.length) {
+        list.insertBefore(line(LINES[step - 1]), caret);
+      }
+      if (step >= LINES.length) caret.remove();
+    }, 1100);
+  });
+</script>

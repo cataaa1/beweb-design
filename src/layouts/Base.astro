@@ -1,0 +1,137 @@
+---
+import "@/styles/global.css";
+import SiteHeader from "@/components/SiteHeader.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import CursorBall from "@/components/CursorBall.astro";
+
+const title = "BeWeb — Diseño Web, Landing Pages, E-commerce & WordPress | Mar del Plata";
+const description =
+  "Agencia de desarrollo web en Mar del Plata. Creamos sitios institucionales con WordPress y Astro, landing pages de alto rendimiento y tiendas online con WooCommerce y TiendaNube.";
+const ogImage = "https://beweb.com.ar/img/og-image.png";
+const ogImageAlt = "BeWeb — Agencia Boutique de Desarrollo Web";
+const orgDescription =
+  "Agencia boutique de desarrollo web en Argentina. Sitios institucionales, catálogos y tiendas online con tecnología de vanguardia e inteligencia artificial.";
+const address = {
+  "@type": "PostalAddress",
+  addressLocality: "Mar del Plata",
+  addressRegion: "Buenos Aires",
+  addressCountry: "AR",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://beweb.com.ar/#organization",
+      name: "BeWeb",
+      url: "https://beweb.com.ar",
+      logo: { "@type": "ImageObject", url: "https://beweb.com.ar/favicon.svg" },
+      email: "hola@beweb.com.ar",
+      description: orgDescription,
+      areaServed: { "@type": "Country", name: "Argentina" },
+      knowsAbout: [
+        "Diseño Web",
+        "Desarrollo Web",
+        "E-commerce",
+        "Sitios Institucionales",
+        "WordPress",
+        "Tiendas Online",
+        "Inteligencia Artificial",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        email: "hola@beweb.com.ar",
+        availableLanguage: "es",
+      },
+      address,
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://beweb.com.ar/#website",
+      url: "https://beweb.com.ar",
+      name: "BeWeb",
+      publisher: { "@id": "https://beweb.com.ar/#organization" },
+      inLanguage: "es-AR",
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://beweb.com.ar/",
+      url: "https://beweb.com.ar/",
+      name: "BeWeb — Diseño & Desarrollo Web | Agencia Boutique",
+      description: orgDescription,
+      isPartOf: { "@id": "https://beweb.com.ar/#website" },
+      about: { "@id": "https://beweb.com.ar/#organization" },
+      inLanguage: "es-AR",
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://beweb.com.ar/#service",
+      name: "BeWeb — Agencia de Desarrollo Web",
+      url: "https://beweb.com.ar",
+      email: "hola@beweb.com.ar",
+      priceRange: "$$",
+      address,
+      serviceType: ["Diseño Web", "Desarrollo Web", "E-commerce", "Consultoría IT"],
+      availableLanguage: "es",
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es-AR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#1B2433" />
+    <meta name="author" content="BeWeb" />
+    <meta name="geo.region" content="AR" />
+    <meta name="geo.placename" content="Argentina" />
+    <link rel="canonical" href="https://beweb.com.ar/" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://beweb.com.ar/" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:site_name" content="BeWeb" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:description"
+      content="Agencia de desarrollo web en Mar del Plata. Sitios institucionales, landing pages y tiendas online con WordPress, WooCommerce y TiendaNube."
+    />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://formpost.rollpix.app" crossorigin />
+    <link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
+
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer
+    ></script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <div class="min-h-screen bg-marino font-sans text-crema antialiased [scroll-behavior:smooth]">
+      <SiteHeader />
+      <main><slot /></main>
+      <SiteFooter />
+      <CursorBall />
+    </div>
+  </body>
+</html>

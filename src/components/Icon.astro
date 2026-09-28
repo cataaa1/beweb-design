@@ -1,0 +1,38 @@
+---
+// Inline copies of the lucide icons the site uses (same paths and attributes as lucide-react 0.507)
+const PATHS = {
+  "arrow-right": ["M5 12h14", "m12 5 7 7-7 7"],
+  "arrow-down": ["M12 5v14", "m19 12-7 7-7-7"],
+  "arrow-up": ["m5 12 7-7 7 7", "M12 19V5"],
+  "arrow-up-right": ["M7 7h10v10", "M7 17 17 7"],
+  check: ["M20 6 9 17l-5-5"],
+  plus: ["M5 12h14", "M12 5v14"],
+  menu: ["M4 12h16", "M4 18h16", "M4 6h16"],
+  x: ["M18 6 6 18", "m6 6 12 12"],
+} as const;
+
+interface Props {
+  name: keyof typeof PATHS;
+  class?: string;
+  [attr: `data-${string}`]: string | undefined;
+}
+
+const { name, class: className, ...rest } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={`lucide lucide-${name}${className ? ` ${className}` : ""}`}
+  {...rest}
+>
+  {PATHS[name].map((d) => <path d={d} />)}
+</svg>
