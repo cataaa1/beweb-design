@@ -42,11 +42,11 @@ export function ServiceVisual({ active }: ServiceVisualProps) {
         </div>
       </div>
 
-      {/* 02 Ecommerce — product grid + cart */}
+      {/* 03 Tiendas online — product grid + cart */}
       <div
         className={cn(
           "absolute inset-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          active === 1 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
+          active === 2 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
         )}
       >
         <div className="grid h-full grid-cols-2 gap-3">
@@ -73,11 +73,11 @@ export function ServiceVisual({ active }: ServiceVisualProps) {
         </div>
       </div>
 
-      {/* 03 Desarrollo — service graph */}
+      {/* 04 Desarrollo — connected pieces */}
       <div
         className={cn(
           "absolute inset-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          active === 2 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
+          active === 3 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
         )}
       >
         <svg viewBox="0 0 300 380" className="h-full w-full">
@@ -88,10 +88,10 @@ export function ServiceVisual({ active }: ServiceVisualProps) {
             <path className="bw-dash" d="M230 190 L150 310" />
           </g>
           {[
-            { x: 150, y: 70, l: "web", c: "#EDE6D8" },
-            { x: 70, y: 190, l: "api", c: "#3E5C7E" },
-            { x: 230, y: 190, l: "worker", c: "#3E5C7E" },
-            { x: 150, y: 310, l: "postgres", c: "#B5473A" },
+            { x: 150, y: 70, l: "tu web", c: "#EDE6D8" },
+            { x: 70, y: 190, l: "clientes", c: "#3E5C7E" },
+            { x: 230, y: 190, l: "ventas", c: "#3E5C7E" },
+            { x: 150, y: 310, l: "IA", c: "#B5473A" },
           ].map((n) => (
             <g key={n.l}>
               <rect x={n.x - 44} y={n.y - 20} width="88" height="40" fill="#1F2F45" stroke={n.c} strokeWidth="1.2" />
@@ -104,26 +104,26 @@ export function ServiceVisual({ active }: ServiceVisualProps) {
         </svg>
       </div>
 
-      {/* 04 Consultoría — maturity levels */}
+      {/* 02 Landing pages — conversion funnel */}
       <div
         className={cn(
           "absolute inset-10 flex flex-col justify-end gap-3 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          active === 3 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
+          active === 1 ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]"
         )}
       >
         {[
-          { l: "L4", w: "w-[92%]", c: "bg-ladrillo" },
-          { l: "L3", w: "w-[72%]", c: "bg-crema/80" },
-          { l: "L2", w: "w-[52%]", c: "bg-bruma/70" },
-          { l: "L1", w: "w-[32%]", c: "bg-acero" },
+          { l: "Visitas", w: "w-[92%]", c: "bg-acero" },
+          { l: "Interés", w: "w-[72%]", c: "bg-bruma/70" },
+          { l: "Consultas", w: "w-[52%]", c: "bg-crema/80" },
+          { l: "Ventas", w: "w-[32%]", c: "bg-ladrillo" },
         ].map((b, i) => (
           <div key={b.l} className="flex items-center gap-3">
-            <span className="w-6 font-mono text-[10px] text-crema/60">{b.l}</span>
+            <span className="w-16 shrink-0 font-mono text-[10px] text-crema/60">{b.l}</span>
             <div
               className={cn("h-10 origin-left transition-transform duration-1000", b.w, b.c)}
               style={{
-                transform: active === 3 ? "scaleX(1)" : "scaleX(0)",
-                transitionDelay: `${(3 - i) * 120}ms`,
+                transform: active === 1 ? "scaleX(1)" : "scaleX(0)",
+                transitionDelay: `${i * 120}ms`,
               }}
             />
           </div>

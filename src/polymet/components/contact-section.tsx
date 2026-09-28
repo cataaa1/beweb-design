@@ -3,8 +3,8 @@ import { ArrowRightIcon, CheckIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SplitLines } from "@/polymet/components/reveal";
 
-const TYPES = ["Institucional", "Ecommerce", "Desarrollo", "Consultoría"];
-const BUDGETS = ["< USD 3k", "3k – 10k", "10k – 30k", "30k +"];
+const TYPES = ["Institucional", "Landing page", "Tienda online", "A medida"];
+const BUDGETS = ["Lo antes posible", "En 1 mes", "En 2–3 meses", "Sin apuro"];
 
 function Field({
   label,
@@ -76,8 +76,8 @@ export function ContactSection() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [type, setType] = useState("Ecommerce");
-  const [budget, setBudget] = useState("3k – 10k");
+  const [type, setType] = useState("Institucional");
+  const [budget, setBudget] = useState("En 1 mes");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
 
@@ -92,27 +92,30 @@ export function ContactSection() {
       <div className="mx-auto grid max-w-[1440px] grid-cols-12 gap-x-10 gap-y-16 px-5 md:px-10">
         <div className="col-span-12 lg:col-span-5">
           <h2 className="text-6xl font-medium uppercase leading-[0.88] tracking-[-0.055em] text-crema md:text-8xl">
-            <SplitLines lines={["¿Qué", "lanzamos", "ahora?"]} />
+            <SplitLines lines={["Empecemos", "tu", "proyecto."]} />
           </h2>
-          <div className="mt-14 space-y-6">
+          <p className="mt-8 max-w-sm text-lg leading-snug text-crema/60">
+            Contanos tu idea y la hacemos realidad.
+          </p>
+          <div className="mt-10 space-y-6">
             <a
-              href="mailto:hola@beweb.dev"
+              href="mailto:hola@beweb.com.ar"
               className="group inline-flex items-center gap-3 text-2xl tracking-[-0.02em] text-crema md:text-3xl"
             >
               <span className="relative">
-                hola@beweb.dev
+                hola@beweb.com.ar
                 <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ladrillo transition-transform duration-500 group-hover:scale-x-100" />
               </span>
               <ArrowRightIcon className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <div className="grid grid-cols-2 gap-6 font-mono text-[11px] leading-5 text-crema/50">
               <div>
-                WhatsApp<br />
-                <span className="text-crema/80">+54 11 0000 0000</span>
+                Ubicación<br />
+                <span className="text-crema/80">Mar del Plata, Argentina</span>
               </div>
               <div>
-                Estudio<br />
-                <span className="text-crema/80">Buenos Aires, AR</span>
+                Tiempo de respuesta<br />
+                <span className="text-crema/80">24hs hábiles</span>
               </div>
             </div>
           </div>
@@ -128,7 +131,7 @@ export function ContactSection() {
                 Gracias{name ? `, ${name.split(" ")[0]}` : ""}.
               </p>
               <p className="mt-3 max-w-sm text-crema/60">
-                Te respondemos en menos de 24 horas hábiles con los próximos pasos.
+                Respondemos dentro de las 24hs hábiles con los próximos pasos.
               </p>
               <button
                 type="button"
@@ -147,12 +150,12 @@ export function ContactSection() {
                 <Field id="name" label="Nombre" value={name} onChange={setName} required />
                 <Field id="email" label="Email" type="email" value={email} onChange={setEmail} required />
               </div>
-              <Field id="company" label="Empresa" value={company} onChange={setCompany} />
-              <Choice label="Tipo de proyecto" options={TYPES} value={type} onChange={setType} />
-              <Choice label="Presupuesto" options={BUDGETS} value={budget} onChange={setBudget} />
+              <Field id="company" label="Celular (opcional)" type="tel" value={company} onChange={setCompany} />
+              <Choice label="¿Qué necesitás?" options={TYPES} value={type} onChange={setType} />
+              <Choice label="¿Para cuándo?" options={BUDGETS} value={budget} onChange={setBudget} />
               <label htmlFor="message" className="group block border-b border-bruma/20 pb-3 focus-within:border-crema">
                 <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50 group-focus-within:text-ladrillo">
-                  Contanos sobre el proyecto
+                  Mensaje
                 </span>
                 <textarea
                   id="message"
@@ -169,7 +172,7 @@ export function ContactSection() {
               >
                 <span className="absolute inset-0 origin-bottom scale-y-0 bg-crema transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
                 <span className="relative text-xl font-medium tracking-[-0.02em] transition-colors duration-300 group-hover:text-marino">
-                  {status === "sending" ? "Enviando…" : "Enviar proyecto"}
+                  {status === "sending" ? "Enviando…" : "Hacé despegar tu proyecto"}
                 </span>
                 <ArrowRightIcon className="relative h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:text-marino" />
               </button>

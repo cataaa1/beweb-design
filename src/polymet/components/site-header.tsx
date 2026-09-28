@@ -60,7 +60,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-4">
           <span className="hidden font-mono text-[11px] tracking-[0.1em] text-crema/50 xl:inline">
-            BUE {time}
+            MDP {time}
           </span>
           <a
             href="#contacto"

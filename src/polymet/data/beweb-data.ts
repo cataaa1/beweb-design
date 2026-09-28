@@ -1,10 +1,8 @@
 export interface Project {
   id: string;
   name: string;
-  client: string;
-  type: string;
-  year: string;
-  stack: string[];
+  type: "Institucional" | "E-commerce" | "Landing";
+  domain: string;
   summary: string;
   image: string;
   url: string;
@@ -21,8 +19,6 @@ export interface Service {
 
 export interface Tool {
   name: string;
-  short: string;
-  group: "Comercio" | "Diseño" | "Frontend" | "Backend" | "Infra" | "IA";
 }
 
 export interface ProcessStep {
@@ -32,78 +28,89 @@ export interface ProcessStep {
   duration: string;
 }
 
+const img = (n: number) => `https://beweb.com.ar/img/proyecto-${n}.webp?v=20260818`;
+
 export const projects: Project[] = [
   {
-    id: "tostado",
-    name: "Tostado Sur",
-    client: "Café de especialidad",
-    type: "Ecommerce",
-    year: "2024",
-    stack: ["Shopify", "Liquid", "GSAP"],
-    summary:
-      "Tienda con suscripciones mensuales, catálogo por origen y checkout en un paso.",
-    image: "https://v3b.fal.media/files/b/0aac2dbe/3LKi1vPlB1pTQjubgT9hf.jpg",
-    url: "#",
-  },
-  {
-    id: "estudio-norte",
-    name: "Estudio Norte",
-    client: "Arquitectura",
+    id: "rollpix",
+    name: "Rollpix",
     type: "Institucional",
-    year: "2024",
-    stack: ["Astro", "Tailwind CSS", "Vercel"],
-    summary:
-      "Portfolio editorial con obras navegables y tiempos de carga menores a un segundo.",
-    image: "https://v3b.fal.media/files/b/0aac2dbe/iyRjRGX14UoF0UpLfaqQa.jpg",
-    url: "#",
+    domain: "rollpix.com",
+    summary: "Sitio institucional que presenta la empresa y sus servicios de forma clara y profesional.",
+    image: img(1),
+    url: "https://rollpix.com/",
   },
   {
-    id: "metrica",
-    name: "Métrica",
-    client: "SaaS de logística",
-    type: "Desarrollo",
-    year: "2025",
-    stack: ["Next.js", "PostgreSQL", "AWS"],
-    summary:
-      "Panel de operaciones en tiempo real para flotas, con reportes y roles por equipo.",
-    image: "https://v3b.fal.media/files/b/0aac2dbe/EPFuM_LqJzrnB4_JC-jJp.jpg",
-    url: "#",
+    id: "starvie",
+    name: "StarVie Argentina",
+    type: "E-commerce",
+    domain: "starvie.com.ar",
+    summary: "Tienda online de pádel con catálogo completo, pagos y envíos a todo el país.",
+    image: img(2),
+    url: "https://starvie.com.ar/",
   },
   {
-    id: "lana",
-    name: "Lana & Co.",
-    client: "Indumentaria",
-    type: "Ecommerce",
-    year: "2023",
-    stack: ["Shopify", "React", "Figma"],
-    summary:
-      "Rediseño completo de marca digital y tienda headless con lookbooks por temporada.",
-    image: "https://v3b.fal.media/files/b/0aac2dbe/3NDxYyl9EaM1qysFshuOI.jpg",
-    url: "#",
-  },
-  {
-    id: "costa-alta",
-    name: "Costa Alta",
-    client: "Hotel boutique",
+    id: "hit-creativo",
+    name: "Hit Creativo",
     type: "Institucional",
-    year: "2023",
-    stack: ["WordPress", "WooCommerce", "GSAP"],
-    summary:
-      "Sitio bilingüe con reservas directas integradas y gestor de contenidos a medida.",
-    image: "https://v3b.fal.media/files/b/0aac2dbf/4nvLSijPRVae-eATW7kqf.jpg",
-    url: "#",
+    domain: "hitcreativo.com",
+    summary: "Presencia digital para una agencia creativa, con foco en su trabajo y su identidad.",
+    image: img(3),
+    url: "https://hitcreativo.com/",
   },
   {
-    id: "lex",
-    name: "Lex Asistente",
-    client: "Estudio jurídico",
-    type: "Consultoría + IA",
-    year: "2025",
-    stack: ["AI / ChatGPT", "Node.js", "Docker"],
-    summary:
-      "Asistente interno que busca en miles de expedientes y redacta borradores.",
-    image: "https://v3b.fal.media/files/b/0aac2dbf/OP9g0pcX32QdKxJnn2Iml.jpg",
-    url: "#",
+    id: "exactian",
+    name: "Exactian",
+    type: "Institucional",
+    domain: "exactian.com",
+    summary: "Sitio para una plataforma de gestión de contratistas, pensado para generar consultas.",
+    image: img(4),
+    url: "https://exactian.com/",
+  },
+  {
+    id: "tango-y-pampa",
+    name: "Tango y Pampa",
+    type: "Landing",
+    domain: "tangoypampa.com",
+    summary: "Landing page de alto impacto, rápida y enfocada en una sola acción.",
+    image: img(5),
+    url: "https://tangoypampa.com/",
+  },
+  {
+    id: "telpin",
+    name: "Telpin",
+    type: "Institucional",
+    domain: "telpin.com.ar",
+    summary: "Sitio de una cooperativa de telecomunicaciones, con información clara para sus socios.",
+    image: img(6),
+    url: "https://telpin.com.ar/",
+  },
+  {
+    id: "cestel",
+    name: "Cestel",
+    type: "Institucional",
+    domain: "cestel.com.ar",
+    summary: "Sitio institucional moderno que comunica la marca y sus servicios.",
+    image: img(7),
+    url: "https://cestel.com.ar/",
+  },
+  {
+    id: "bibar",
+    name: "Bibar Bag in Box",
+    type: "Landing",
+    domain: "bibar.com.ar",
+    summary: "Landing de producto con un mensaje directo para convertir visitas en contactos.",
+    image: img(8),
+    url: "https://bibar.com.ar/ar/baginbox/",
+  },
+  {
+    id: "beniplast",
+    name: "Grupo Beniplast",
+    type: "Institucional",
+    domain: "beniplast.com",
+    summary: "Sitio corporativo para un grupo industrial, ordenado y fácil de recorrer.",
+    image: img(9),
+    url: "https://beniplast.com/",
   },
 ];
 
@@ -112,113 +119,92 @@ export const services: Service[] = [
     id: "institucional",
     index: "01",
     title: "Sitios institucionales",
-    lead: "La cara digital de tu empresa, rápida, clara y fácil de mantener.",
-    deliverables: [
-      "Arquitectura de contenido",
-      "Diseño a medida",
-      "CMS autoadministrable",
-      "SEO técnico",
-    ],
-    tools: ["Astro", "WordPress", "Figma", "GSAP"],
+    lead: "Presencia digital profesional que comunica tu marca con diseño moderno, gran velocidad y bien posicionada en Google.",
+    deliverables: ["Diseño a medida", "Autoadministrable", "Adaptado a celulares", "Posicionamiento en Google"],
+    tools: ["WordPress", "Astro"],
   },
   {
-    id: "ecommerce",
+    id: "landing",
     index: "02",
-    title: "Ecommerce",
-    lead: "Tiendas que venden desde el primer día y escalan con tu catálogo.",
-    deliverables: [
-      "Tienda Shopify o WooCommerce",
-      "Pasarelas de pago",
-      "Integración con stock",
-      "Headless commerce",
-    ],
-    tools: ["Shopify", "WooCommerce", "Next.js", "Vercel"],
+    title: "Landing pages",
+    lead: "Páginas de alto impacto, rápidas y efectivas. Cada pixel cuenta, cada segundo importa.",
+    deliverables: ["Mensaje claro y directo", "Carga ultrarrápida", "Formularios de contacto", "Pensadas para convertir"],
+    tools: ["Velocidad", "Conversión"],
+  },
+  {
+    id: "tiendas",
+    index: "03",
+    title: "Catálogos & tiendas online",
+    lead: "E-commerce completo y catálogos digitales que convierten visitantes en clientes. Tu negocio abierto 24/7.",
+    deliverables: ["Catálogo de productos", "Medios de pago", "Gestión de stock", "Envíos"],
+    tools: ["WooCommerce", "TiendaNube", "Shopify"],
   },
   {
     id: "desarrollo",
-    index: "03",
-    title: "Desarrollo a medida",
-    lead: "Plataformas, paneles y productos digitales construidos para durar.",
-    deliverables: [
-      "Aplicaciones web",
-      "APIs e integraciones",
-      "Bases de datos",
-      "Infraestructura cloud",
-    ],
-    tools: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-  },
-  {
-    id: "consultoria",
     index: "04",
-    title: "Consultoría",
-    lead: "Te ayudamos a decidir qué construir, con qué y en qué orden.",
-    deliverables: [
-      "Auditoría técnica",
-      "Estrategia de producto",
-      "Adopción de IA",
-      "Migraciones",
-    ],
-    tools: ["AI / ChatGPT", "AWS", "Docker", "Figma"],
+    title: "Desarrollo & consultoría",
+    lead: "Soluciones a medida e inteligencia artificial aplicada a tu negocio, con acompañamiento en cada decisión.",
+    deliverables: ["Proyectos a medida", "Inteligencia artificial", "Asesoramiento", "Mejora de sitios existentes"],
+    tools: ["A medida", "IA"],
   },
 ];
 
 export const tools: Tool[] = [
-  { name: "WooCommerce", short: "Woo", group: "Comercio" },
-  { name: "Shopify", short: "Sh", group: "Comercio" },
-  { name: "AI / ChatGPT", short: "AI", group: "IA" },
-  { name: "Figma", short: "Fg", group: "Diseño" },
-  { name: "GSAP", short: "Gs", group: "Diseño" },
-  { name: "PostgreSQL", short: "Pg", group: "Backend" },
-  { name: "Vercel", short: "Vc", group: "Infra" },
-  { name: "AWS", short: "Aw", group: "Infra" },
-  { name: "Docker", short: "Dk", group: "Infra" },
-  { name: "Astro", short: "As", group: "Frontend" },
-  { name: "React", short: "Re", group: "Frontend" },
-  { name: "Next.js", short: "Nx", group: "Frontend" },
-  { name: "TypeScript", short: "Ts", group: "Frontend" },
-  { name: "Tailwind CSS", short: "Tw", group: "Frontend" },
-  { name: "Node.js", short: "No", group: "Backend" },
-  { name: "WordPress", short: "Wp", group: "Comercio" },
-];
+  "Astro",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Tailwind CSS",
+  "Node.js",
+  "WordPress",
+  "WooCommerce",
+  "Shopify",
+  "AI / ChatGPT",
+  "Figma",
+  "GSAP",
+  "PostgreSQL",
+  "Vercel",
+  "AWS",
+  "Docker",
+].map((name) => ({ name }));
 
 export const processSteps: ProcessStep[] = [
   {
     index: "01",
-    title: "Descubrir",
-    body: "Entendemos tu negocio, tus usuarios y lo que el sitio tiene que lograr.",
+    title: "Descubrimiento",
+    body: "Entendemos tu negocio, tus objetivos y tu audiencia para definir la estrategia perfecta.",
     duration: "1–2 semanas",
   },
   {
     index: "02",
-    title: "Diseñar",
-    body: "Prototipos navegables en Figma que validás antes de escribir código.",
+    title: "Diseño",
+    body: "Creamos diseños que reflejan tu marca, con estética moderna y funcional.",
     duration: "2–3 semanas",
   },
   {
     index: "03",
-    title: "Construir",
-    body: "Desarrollo por etapas con entregas semanales y un entorno de prueba siempre activo.",
-    duration: "3–8 semanas",
+    title: "Desarrollo",
+    body: "Construimos tu sitio con tecnología actual: rápido, seguro y fácil de usar.",
+    duration: "3–6 semanas",
   },
   {
     index: "04",
-    title: "Lanzar y crecer",
-    body: "Publicamos, medimos y seguimos iterando junto a tu equipo.",
+    title: "Lanzamiento",
+    body: "Publicamos, probamos y te acompañamos con soporte continuo para que todo funcione perfecto.",
     duration: "Continuo",
   },
 ];
 
 export const stats = [
-  { value: 120, suffix: "+", label: "Proyectos lanzados" },
-  { value: 9, suffix: "", label: "Años construyendo web" },
-  { value: 98, suffix: "%", label: "Clientes que vuelven" },
-  { value: 16, suffix: "", label: "Tecnologías en producción" },
+  { value: 9, suffix: "+", label: "Proyectos destacados" },
+  { value: 3, suffix: "", label: "Formas de estar online" },
+  { value: 24, suffix: "hs", label: "Tiempo de respuesta" },
+  { value: 100, suffix: "%", label: "Diseño a medida" },
 ];
 
 export const navLinks = [
-  { label: "Trabajo", href: "#trabajo" },
   { label: "Servicios", href: "#servicios" },
-  { label: "Stack", href: "#stack" },
+  { label: "Proyectos", href: "#proyectos" },
   { label: "Proceso", href: "#proceso" },
   { label: "Contacto", href: "#contacto" },
 ];

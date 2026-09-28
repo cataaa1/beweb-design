@@ -1,6 +1,7 @@
 import { ArrowUpIcon } from "lucide-react";
 import { navLinks } from "@/polymet/data/beweb-data";
 import { PixelField } from "@/polymet/components/pixel-field";
+import { BewebLogo } from "@/polymet/components/beweb-logo";
 
 const SOCIAL = [
   { label: "Instagram", href: "#" },
@@ -20,7 +21,8 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-10 border-t border-bruma/15 py-12 md:grid-cols-12">
           <div className="col-span-2 md:col-span-5">
             <p className="max-w-sm text-lg leading-snug text-crema/70">
-              Diseño y desarrollo web para marcas que quieren un sitio a la altura de su negocio.
+              Cada proyecto es único. Nos tomamos el tiempo de entender tu negocio para crear
+              soluciones que realmente marcan la diferencia.
             </p>
           </div>
           <nav className="md:col-span-2">
@@ -57,15 +59,13 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1440px] select-none px-3 md:px-6">
-        <div className="text-[27vw] font-semibold leading-[0.78] tracking-[-0.075em] text-crema xl:text-[390px]">
-          beweb<span className="text-ladrillo">.</span>
-        </div>
+      <div className="mx-auto max-w-[1440px] select-none px-5 pb-4 pt-6 md:px-10">
+        <BewebLogo className="h-auto w-full" weight={2.2} />
       </div>
 
       <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-2 px-5 py-6 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40 md:flex-row md:px-10">
-        <span>© {new Date().getFullYear()} BeWeb Estudio</span>
-        <span>Hecho con React, Tailwind CSS y demasiado café</span>
+        <span>© {new Date().getFullYear()} BeWeb · Agencia de diseño y desarrollo web</span>
+        <span>Mar del Plata, Argentina</span>
       </div>
     </footer>
   );

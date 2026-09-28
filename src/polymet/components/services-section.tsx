@@ -13,11 +13,10 @@ export function ServicesSection() {
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid grid-cols-12 gap-y-10">
           <h2 className="col-span-12 text-5xl font-medium leading-[0.95] tracking-[-0.045em] text-crema md:col-span-7 md:text-7xl">
-            <SplitLines lines={["Cuatro formas", "de trabajar juntos."]} />
+            <SplitLines lines={["Lo que", "hacemos."]} />
           </h2>
           <p className="col-span-12 self-end text-base leading-relaxed text-crema/60 md:col-span-4 md:col-start-9">
-            Desde una landing hasta una plataforma completa. Un solo equipo diseña, desarrolla y
-            mantiene, sin intermediarios.
+            Soluciones digitales completas, desde la idea hasta la implementación.
           </p>
         </div>
 

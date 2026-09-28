@@ -90,7 +90,7 @@ export function ProcessSection() {
     <section id="proceso" className="relative bg-marino-deep py-28 md:py-40">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <h2 className="max-w-4xl text-5xl font-medium leading-[0.95] tracking-[-0.045em] text-crema md:text-7xl">
-          <SplitLines lines={["Del brief al deploy,", "sin cajas negras."]} />
+          <SplitLines lines={["Cómo trabajamos:", "claro y colaborativo."]} />
         </h2>
 
         <div
@@ -100,7 +100,7 @@ export function ProcessSection() {
           onMouseLeave={() => setPaused(false)}
         >
           <div className="relative z-20 flex items-center justify-between border-b border-bruma/10 bg-marino/80 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50 backdrop-blur">
-            <span>proyecto / cliente-2025</span>
+            <span>tu proyecto</span>
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 bg-bruma bw-blink" />
               etapa {processSteps[active].index}

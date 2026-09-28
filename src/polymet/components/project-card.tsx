@@ -31,6 +31,8 @@ export function ProjectCard({ project, index, className }: ProjectCardProps) {
   return (
     <a
       href={project.url}
+      target="_blank"
+      rel="noreferrer"
       onPointerMove={onMove}
       onPointerLeave={onLeave}
       className={cn("group block", className)}
@@ -46,7 +48,7 @@ export function ProjectCard({ project, index, className }: ProjectCardProps) {
             <span className="h-2 w-2 bg-bruma/30" />
           </span>
           <span className="flex-1 truncate font-mono text-[10px] text-crema/40">
-            {project.id}.com
+            {project.domain}
           </span>
           <span className="font-mono text-[10px] text-crema/40">{String(index + 1).padStart(2, "0")}</span>
         </div>
@@ -67,11 +69,11 @@ export function ProjectCard({ project, index, className }: ProjectCardProps) {
       <div className="mt-5 grid grid-cols-[1fr_auto] gap-x-6 gap-y-2">
         <h3 className="text-2xl font-medium tracking-[-0.03em] text-crema">{project.name}</h3>
         <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50 pt-2">
-          {project.type} · {project.year}
+          {project.type}
         </span>
         <p className="max-w-md text-sm leading-relaxed text-crema/60">{project.summary}</p>
         <span className="font-mono text-[11px] text-bruma/70 self-end text-right">
-          {project.stack.join(" / ")}
+          Visitar sitio ↗
         </span>
       </div>
     </a>

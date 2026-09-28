@@ -4,7 +4,7 @@ import { projects } from "@/polymet/data/beweb-data";
 import { ProjectCard } from "@/polymet/components/project-card";
 import { Reveal, SplitLines } from "@/polymet/components/reveal";
 
-const FILTERS = ["Todos", "Institucional", "Ecommerce", "Desarrollo", "Consultoría + IA"];
+const FILTERS = ["Todos", "Institucional", "E-commerce", "Landing"];
 
 export function WorkSection() {
   const [filter, setFilter] = useState("Todos");
@@ -15,11 +15,11 @@ export function WorkSection() {
   );
 
   return (
-    <section id="trabajo" className="relative bg-marino pb-28 md:pb-40">
+    <section id="proyectos" className="relative bg-marino pb-28 md:pb-40">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="flex flex-col gap-8 border-t border-bruma/15 pt-10 md:flex-row md:items-end md:justify-between">
           <h2 className="text-5xl font-medium tracking-[-0.045em] text-crema md:text-7xl">
-            <SplitLines lines={["Trabajo lanzado"]} />
+            <SplitLines lines={["Sitios que construimos"]} />
           </h2>
           <div className="flex flex-wrap gap-x-6 gap-y-2" role="tablist">
             {FILTERS.map((f) => {
