@@ -66,8 +66,11 @@ const url = "ml-2 flex flex-1 items-center gap-1.5 bg-marino px-2 py-1 font-mono
 const card = "border border-bruma/20 bg-marino-2 shadow-[0_24px_48px_-20px_rgba(0,0,0,0.75)]";
 ---
 
+<!-- Decorative illustration of fake product UI at miniature scale; its "text" is never meant to be
+     legible or read out, so it's hidden from assistive tech rather than forced to WCAG contrast -->
 <div
   data-service-visual
+  aria-hidden="true"
   class="relative aspect-[4/5] w-full overflow-hidden border border-bruma/15 bg-marino bw-dots-bg"
 >
   <div data-stage class="absolute left-0 top-0 h-[662px] w-[530px] origin-top-left">

@@ -33,7 +33,7 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                   aria-expanded={open ? "true" : "false"}
                   class="group flex w-full items-baseline gap-4 py-7 text-left md:gap-6"
                 >
-                  <span data-service-index class={serviceIndexClass(open)}>
+                  <span data-service-index aria-hidden="true" class={serviceIndexClass(open)}>
                     {s.index}
                   </span>
                   <span data-service-title class={serviceTitleClass(open)}>
@@ -45,9 +45,11 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                   <div class="overflow-hidden">
                     <div class="max-w-xl pb-10 pl-10 md:pl-12">
                       <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
+                      <!-- #ca8376 is ladrillo lightened ~38%: plain text-ladrillo only hits 2.5:1 on this
+                           background, below WCAG AA; this tint clears 4.5:1 while reading as the same hue -->
                       <a
                         href="#contacto"
-                        class="group/cta mt-4 inline-flex items-center gap-2 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
+                        class="group/cta mt-4 inline-flex items-center gap-2 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[#ca8376] transition-colors hover:text-crema"
                       >
                         Me interesa
                         <span aria-hidden="true" class="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>

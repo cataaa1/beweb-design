@@ -22,7 +22,8 @@ const scrollMs = Math.round(((project.imageHeight - visible) / 1280) * 3000);
     data-tilt
     class="relative overflow-hidden border border-bruma/15 bg-marino-2 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out [transform-style:preserve-3d]"
   >
-    <div class="flex items-center gap-3 border-b border-bruma/10 px-3 py-2">
+    <!-- Decorative browser-chrome replica; the real accessible name comes from the title and type below -->
+    <div aria-hidden="true" class="flex items-center gap-3 border-b border-bruma/10 px-3 py-2">
       <span class="flex gap-1">
         <span class="h-2 w-2 bg-ladrillo/80"></span>
         <span class="h-2 w-2 bg-bruma/30"></span>
@@ -36,12 +37,15 @@ const scrollMs = Math.round(((project.imageHeight - visible) / 1280) * 3000);
     <div class="relative aspect-[16/10] overflow-hidden">
       <img
         src={project.image}
+        srcset={`${project.image.replace(".webp", "-700.webp")} 700w, ${project.image.replace(".webp", "-1000.webp")} 1000w, ${project.image} 1280w`}
+        sizes="(min-width: 768px) 50vw, 100vw"
         alt={`Sitio de ${project.name}`}
         width="1280"
         height={project.imageHeight}
         style={`--shift: -${shift.toFixed(2)}%; --scroll-ms: ${scrollMs}ms;`}
         class="absolute inset-x-0 top-0 h-auto w-full transition-transform duration-700 ease-in-out will-change-transform group-hover:[transform:translateY(var(--shift))] group-hover:[transition-duration:var(--scroll-ms)]"
         loading="lazy"
+        decoding="async"
       />
       <div
         class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(420px_circle_at_var(--gx,50%)_var(--gy,50%),rgba(237,230,216,0.16),transparent_60%)]"
@@ -57,7 +61,7 @@ const scrollMs = Math.round(((project.imageHeight - visible) / 1280) * 3000);
 
   <div class="mt-5 flex items-baseline justify-between gap-6">
     <h3 class="text-2xl font-medium tracking-[-0.03em] text-crema">{project.name}</h3>
-    <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/50">{project.type}</span>
+    <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crema/60">{project.type}</span>
   </div>
 </a>
 

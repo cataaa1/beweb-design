@@ -1,5 +1,5 @@
-/* Import fonts */
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+/* Fonts are loaded from Base.astro's <head> as non-blocking <link> tags, not @import,
+   so the browser can fetch them in parallel with this stylesheet instead of after it. */
 
 /* Tailwind v3 directives */
 @tailwind base;

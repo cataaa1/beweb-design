@@ -11,9 +11,9 @@ import { tools } from "@/data/beweb-data";
         [0, 1].map((dup) => (
           <span class="flex shrink-0 items-center" aria-hidden={dup === 1 ? "true" : "false"}>
             {tools.map((t) => (
-              <span class="flex items-center text-5xl font-medium tracking-[-0.04em] md:text-7xl">
+              <span class="flex items-center text-3xl font-medium tracking-[-0.04em] md:text-5xl">
                 <span class="px-8">{t.name}</span>
-                <span data-marquee-dot class="h-3 w-3 bg-ladrillo" />
+                <span data-marquee-dot class="h-2.5 w-2.5 bg-ladrillo" />
               </span>
             ))}
           </span>
@@ -30,7 +30,7 @@ import { tools } from "@/data/beweb-data";
 
   if (!reduce) {
     track.classList.remove("bw-marquee-slow");
-    const CYCLE_S = 70; // seconds for one full copy at rest, same pace as the old CSS marquee
+    const CYCLE_S = 70; // seconds for one full copy at rest
     let half = track.scrollWidth / 2;
     let x = 0;
     let dir = -1; // -1 = moving left; flips with the scroll direction
@@ -48,7 +48,7 @@ import { tools } from "@/data/beweb-data";
         const dy = window.scrollY - lastY;
         lastY = window.scrollY;
         if (dy !== 0) dir = dy > 0 ? -1 : 1;
-        boost = Math.min(boost + Math.abs(dy) * 9, 1800);
+        boost = Math.min(boost + Math.abs(dy) * 5, 1000);
       },
       { passive: true },
     );
