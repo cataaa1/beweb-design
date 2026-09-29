@@ -10,12 +10,13 @@ export const mobileMenuClass = (open: boolean) =>
   "overflow-hidden border-t bg-marino transition-[max-height] duration-500 lg:hidden " +
   (open ? "border-bruma/10 max-h-[420px]" : "max-h-0 border-transparent");
 
+/** py-2 keeps the label where pb-1 had it while giving the tab a finger-sized hit area on phones */
 export const filterButtonClass = (active: boolean) =>
-  "relative pb-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors " +
+  "relative py-2 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors " +
   (active ? "text-crema" : "text-crema/40 hover:text-crema/80");
 
 export const filterUnderlineClass = (active: boolean) =>
-  "absolute bottom-0 left-0 h-px bg-ladrillo transition-all duration-500 " + (active ? "w-full" : "w-0");
+  "absolute bottom-1 left-0 h-px bg-ladrillo transition-all duration-500 " + (active ? "w-full" : "w-0");
 
 export const REVEAL_BASE =
   "transition-[transform,opacity] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform";
@@ -26,8 +27,9 @@ export const workLayoutClass = (i: number) => REVEAL_BASE + (i % 2 === 1 ? " md:
 export const serviceIndexClass = (open: boolean) =>
   "font-mono text-xs transition-colors " + (open ? "text-ladrillo" : "text-crema/40");
 
+/** min-w-0 + break-words: without them the longest word sets a floor on the width and overflows on phones */
 export const serviceTitleClass = (open: boolean) =>
-  "flex-1 text-3xl font-medium tracking-[-0.035em] transition-all duration-500 md:text-5xl " +
+  "min-w-0 flex-1 break-words text-[26px] font-medium tracking-[-0.035em] transition-all duration-500 sm:text-3xl md:text-5xl " +
   (open ? "translate-x-2 text-crema" : "text-crema/45 group-hover:text-crema/80");
 
 export const servicePlusClass = (open: boolean) =>

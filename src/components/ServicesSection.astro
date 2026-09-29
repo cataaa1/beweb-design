@@ -19,7 +19,7 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
       </p>
     </div>
 
-    <div class="mt-20 grid grid-cols-12 gap-x-10">
+    <div class="mt-20 grid grid-cols-12 md:gap-x-10">
       <!-- data-no-trail: the pixel trail stays off the text so it can be read -->
       <div data-no-trail class="col-span-12 lg:col-span-7">
         {
@@ -31,7 +31,7 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                   type="button"
                   data-service-trigger
                   aria-expanded={open ? "true" : "false"}
-                  class="group flex w-full items-baseline gap-6 py-7 text-left"
+                  class="group flex w-full items-baseline gap-4 py-7 text-left md:gap-6"
                 >
                   <span data-service-index class={serviceIndexClass(open)}>
                     {s.index}
@@ -47,7 +47,7 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                       <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
                       <a
                         href="#contacto"
-                        class="group/cta mt-5 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
+                        class="group/cta mt-4 inline-flex items-center gap-2 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
                       >
                         Me interesa
                         <span aria-hidden="true" class="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>

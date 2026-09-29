@@ -147,7 +147,7 @@ export const tools: Tool[] = [
   "Node.js",
   "WordPress",
   "WooCommerce",
-  "Shopify",
+  "TiendaNube",
   "AI / ChatGPT",
   "Figma",
   "GSAP",
