@@ -10,8 +10,16 @@ import { navLinks } from "@/data/beweb-data";
     <PixelField cell={9} speed={0.6} />
   </div>
 
-  <div class="mx-auto max-w-[1440px] px-5 md:px-10">
-    <div class="grid grid-cols-2 gap-10 border-t border-bruma/15 py-12 md:grid-cols-12">
+  <div class="relative mx-auto max-w-[1440px] px-5 md:px-10">
+    <!-- The wordmark sits behind everything below as a faint background mark -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-y-0 left-5 right-5 flex select-none items-center md:left-10 md:right-10"
+    >
+      <BewebLogo class="h-auto w-full opacity-[0.12]" />
+    </div>
+
+    <div class="relative grid grid-cols-2 gap-10 border-t border-bruma/15 py-12 md:grid-cols-12">
       <div class="col-span-2 md:col-span-5">
         <p class="max-w-sm text-lg leading-snug text-crema/70">
           Cada proyecto es único. Nos tomamos el tiempo de entender tu negocio para crear soluciones que realmente
@@ -51,16 +59,12 @@ import { navLinks } from "@/data/beweb-data";
         </a>
       </div>
     </div>
-  </div>
 
-  <div class="mx-auto max-w-[1440px] select-none px-5 pb-4 pt-6 opacity-[0.12] md:px-10" aria-hidden="true">
-    <BewebLogo class="h-auto w-full" />
-  </div>
-
-  <div
-    class="mx-auto flex max-w-[1440px] flex-col justify-between gap-2 px-5 py-6 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40 md:flex-row md:px-10"
-  >
-    <span>© {new Date().getFullYear()} BeWeb · Agencia de diseño y desarrollo web</span>
-    <span>Mar del Plata, Argentina</span>
+    <div
+      class="relative flex flex-col justify-between gap-2 pb-10 pt-16 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40 md:flex-row md:pt-28"
+    >
+      <span>© {new Date().getFullYear()} BeWeb · Agencia de diseño y desarrollo web</span>
+      <span>Mar del Plata, Argentina</span>
+    </div>
   </div>
 </footer>
