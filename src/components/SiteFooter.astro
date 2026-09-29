@@ -14,19 +14,22 @@ import { navLinks } from "@/data/beweb-data";
     <!-- The wordmark sits behind everything below as a faint background mark -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute inset-y-0 left-5 right-5 flex select-none items-center md:left-10 md:right-10"
+      class="pointer-events-none absolute inset-y-0 left-1/2 flex w-[240%] -translate-x-1/2 select-none items-center md:left-10 md:right-10 md:w-auto md:translate-x-0"
     >
       <BewebLogo class="h-auto w-full opacity-[0.12]" />
     </div>
 
-    <div class="relative grid grid-cols-2 gap-10 border-t border-bruma/15 py-12 md:grid-cols-12">
-      <div class="col-span-2 md:col-span-5">
+    <!-- Under 360px two columns leave the address too narrow and it gets clipped, so they stack -->
+    <div
+      class="relative grid grid-cols-1 gap-x-6 gap-y-10 border-t border-bruma/15 py-12 min-[360px]:grid-cols-2 xl:grid-cols-12 xl:gap-10"
+    >
+      <div class="col-span-1 min-[360px]:col-span-2 xl:col-span-5">
         <p class="max-w-sm text-lg leading-snug text-crema/70">
           Cada proyecto es único. Nos tomamos el tiempo de entender tu negocio para crear soluciones que realmente
           marcan la diferencia.
         </p>
       </div>
-      <nav class="md:col-span-2">
+      <nav class="xl:col-span-2">
         <ul class="space-y-2">
           {
             navLinks.map((l) => (
@@ -39,13 +42,13 @@ import { navLinks } from "@/data/beweb-data";
           }
         </ul>
       </nav>
-      <div class="space-y-2 text-sm md:col-span-2">
+      <div class="space-y-2 text-sm xl:col-span-2">
         <a href="mailto:hola@beweb.com.ar" class="block text-crema/60 transition-colors hover:text-crema">
           hola@beweb.com.ar
         </a>
         <p class="text-crema/40">Respondemos en 24hs hábiles</p>
       </div>
-      <div class="col-span-2 flex items-start md:col-span-3 md:justify-end">
+      <div class="col-span-1 flex items-start min-[360px]:col-span-2 xl:col-span-3 xl:justify-end">
         <a
           href="#top"
           class="group flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-crema/60 hover:text-crema"
@@ -61,7 +64,7 @@ import { navLinks } from "@/data/beweb-data";
     </div>
 
     <div
-      class="relative flex flex-col justify-between gap-2 pb-10 pt-16 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40 md:flex-row md:pt-28"
+      class="relative flex flex-col justify-between gap-2 pb-8 pt-10 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40 md:flex-row md:pt-28"
     >
       <span>© {new Date().getFullYear()} BeWeb · Agencia de diseño y desarrollo web</span>
       <span>Mar del Plata, Argentina</span>
