@@ -4,8 +4,9 @@
 
 export const pointer = { x: 0, y: 0, active: false, lastMove: 0, overInteractive: false };
 
-// Over links, buttons and fields the trail backs off, so the element being pointed at stays readable
-const INTERACTIVE = "a, button, input, textarea, select, label, [role='button']";
+// Over links, buttons, fields and [data-no-trail] areas the trail backs off, so what is being pointed
+// at stays readable
+const INTERACTIVE = "a, button, input, textarea, select, label, [role='button'], [data-no-trail]";
 
 const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");

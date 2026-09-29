@@ -1,193 +1,90 @@
 ---
 import SplitLines from "./SplitLines.astro";
 import { processSteps } from "@/data/beweb-data";
-import { stepCardClass, stepDotClass, stepIndexClass, stepStatus } from "@/lib/classes";
-
-const POS = [
-  { x: 2, y: 20 },
-  { x: 26.5, y: 50 },
-  { x: 51, y: 20 },
-  { x: 75.5, y: 50 },
-];
-const W = 22.5;
-const H = 34;
-const INTERVAL = 2800;
-
-// Initial state: first step running, nothing done
-const on = (i: number) => i === 0;
-const done = (_i: number) => false;
-
-const curves = POS.slice(0, -1).map((A, i) => {
-  const B = POS[i + 1];
-  const x1 = A.x + W;
-  const y1 = A.y + H / 2;
-  const x2 = B.x;
-  const y2 = B.y + H / 2;
-  const mx = (x1 + x2) / 2;
-  return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
-});
-
-// Rendered twice (mobile grid + desktop diagram), same markup as the React StepCard
-const cards = (desktop: boolean) =>
-  processSteps.map((step, i) => ({
-    step,
-    i,
-    extra: desktop ? "absolute" : "",
-    style: desktop ? `left: ${POS[i].x}%; top: ${POS[i].y}%; width: ${W}%; min-height: ${H}%;` : undefined,
-  }));
 ---
 
 <section id="proceso" class="relative bg-marino-deep py-28 md:py-40">
   <div class="mx-auto max-w-[1440px] px-5 md:px-10">
-    <h2 class="max-w-4xl text-5xl font-medium leading-[0.95] tracking-[-0.045em] text-crema md:text-7xl">
-      <SplitLines lines={["Cómo trabajamos"]} />
-    </h2>
-
-    <div
-      data-process
-      data-interval={INTERVAL}
-      class="relative mt-20 w-full overflow-hidden border border-bruma/15 bg-marino bw-dots-bg"
-    >
-      <div
-        class="relative z-20 flex items-center justify-between border-b border-bruma/10 bg-marino/80 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/50 backdrop-blur"
+    <div class="grid grid-cols-12 gap-y-10">
+      <h2
+        class="col-span-12 text-5xl font-medium leading-[0.95] tracking-[-0.045em] text-crema md:col-span-7 md:text-7xl"
       >
-        <span>tu proyecto</span>
-        <span class="flex items-center gap-2">
-          <span class="h-1.5 w-1.5 bg-bruma bw-blink"></span>
-          etapa <span data-stage>{processSteps[0].index}</span>
-        </span>
-      </div>
+        <SplitLines lines={["Cómo trabajamos"]} />
+      </h2>
+      <p class="col-span-12 self-end text-base leading-relaxed text-crema/60 md:col-span-4 md:col-start-9">
+        Cuatro etapas, un solo equipo de principio a fin. Siempre sabés en qué punto está tu proyecto.
+      </p>
+    </div>
+
+    <!-- A launch sequence: the rail fills with the scroll (horizontal on desktop, vertical on mobile)
+         and each stage lights up as the fill reaches its marker -->
+    <ol data-process class="relative mt-20 grid md:mt-28 lg:grid-cols-4">
+      <span aria-hidden="true" class="absolute bottom-0 left-[5px] top-0 w-px bg-bruma/15 lg:bottom-auto lg:left-0 lg:right-0 lg:h-px lg:w-auto">
+        <span
+          data-process-fill
+          class="absolute left-0 top-0 block w-px bg-ladrillo lg:h-px lg:w-0"
+          style="height: 0%;"></span>
+      </span>
 
       {
-        [false, true].map((desktop) => {
-          const list = cards(desktop).map(({ step, i, extra, style }) => (
-            <button
-              type="button"
-              data-step={i}
-              data-extra={extra}
-              style={style}
-              class={stepCardClass(on(i), extra)}
-            >
-              <span data-step-index class={stepIndexClass(on(i), done(i))}>
-                {step.index}
-              </span>
-              <span class="mt-5 text-lg font-medium tracking-[-0.02em] text-crema">{step.title}</span>
-              <span class="mt-2 text-sm leading-relaxed text-crema/60">{step.body}</span>
-              <span class="mt-auto pt-5">
-                <span class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.12em] text-bruma/60">
-                  <span class="flex items-center gap-2">
-                    <span data-step-dot class={stepDotClass(on(i), done(i))} />
-                    <span data-step-status>{stepStatus(on(i), done(i))}</span>
-                  </span>
-                  {step.duration}
-                </span>
-                <span class="mt-3 block h-px w-full bg-bruma/10">
-                  <span
-                    data-step-bar
-                    class="block h-full bg-bruma transition-[width] ease-linear"
-                    style={`width: ${on(i) || done(i) ? "100%" : "0%"}; transition-duration: ${on(i) ? INTERVAL : 400}ms;`}
-                  />
-                </span>
-              </span>
-            </button>
-          ));
-          return desktop ? (
-            <div class="relative hidden aspect-[16/8] lg:block">
-              <svg class="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                {curves.map((d) => (
-                  <path
-                    data-step-curve
-                    d={d}
-                    fill="none"
-                    stroke="#9CC2E0"
-                    stroke-opacity="0.3"
-                    vector-effect="non-scaling-stroke"
-                    class="bw-dash transition-[stroke] duration-500"
-                    style="stroke-width: 1.5;"
-                  />
-                ))}
-              </svg>
-              {list}
-            </div>
-          ) : (
-            <div class="grid gap-4 p-4 sm:grid-cols-2 lg:hidden">{list}</div>
-          );
-        })
+        processSteps.map((step) => (
+          <li data-process-step data-on="false" class="group relative pb-16 pl-10 last:pb-0 lg:pb-0 lg:pl-0 lg:pr-10 lg:pt-14">
+            <span
+              data-process-marker
+              aria-hidden="true"
+              class="absolute left-0 top-2 h-[11px] w-[11px] border border-bruma/40 bg-marino-deep transition-colors duration-500 group-data-[on=true]:border-ladrillo group-data-[on=true]:bg-ladrillo lg:-top-[5px]"
+            />
+            <span class="mt-2 block text-[88px] font-medium leading-[0.8] tracking-[-0.06em] text-crema/10 transition-colors duration-700 group-data-[on=true]:text-ladrillo lg:text-[120px]">
+              {step.index}
+            </span>
+            <h3 class="mt-8 text-2xl font-medium tracking-[-0.03em] text-crema/40 transition-colors duration-500 group-data-[on=true]:text-crema md:text-3xl">
+              {step.title}
+            </h3>
+            <p class="mt-3 max-w-sm text-base leading-relaxed text-crema/40 transition-colors duration-500 group-data-[on=true]:text-crema/70">
+              {step.body}
+            </p>
+          </li>
+        ))
       }
-    </div>
+    </ol>
   </div>
 </section>
 
 <script>
-  import { processSteps } from "@/data/beweb-data";
-  import { stepCardClass, stepDotClass, stepIndexClass, stepStatus } from "@/lib/classes";
-
   const root = document.querySelector<HTMLElement>("[data-process]")!;
-  const INTERVAL = Number(root.dataset.interval);
-  const stage = root.querySelector<HTMLElement>("[data-stage]")!;
-  const steps = [...root.querySelectorAll<HTMLElement>("[data-step]")];
-  const curves = [...root.querySelectorAll<SVGPathElement>("[data-step-curve]")];
+  const fill = root.querySelector<HTMLElement>("[data-process-fill]")!;
+  const steps = [...root.querySelectorAll<HTMLElement>("[data-process-step]")];
+  const wide = window.matchMedia("(min-width: 1024px)");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-  let active = 0;
-  let paused = false;
-  let inView = false;
-  let timer = 0;
-
-  const render = () => {
-    stage.textContent = processSteps[active].index;
-    for (const card of steps) {
-      const i = Number(card.dataset.step);
-      const on = active === i;
-      const done = active > i;
-      card.className = stepCardClass(on, card.dataset.extra);
-      card.querySelector("[data-step-index]")!.className = stepIndexClass(on, done);
-      card.querySelector("[data-step-dot]")!.className = stepDotClass(on, done);
-      card.querySelector("[data-step-status]")!.textContent = stepStatus(on, done);
-      const bar = card.querySelector<HTMLElement>("[data-step-bar]")!;
-      bar.style.width = done || on ? "100%" : "0%";
-      bar.style.transitionDuration = on && !paused ? `${INTERVAL}ms` : "400ms";
-    }
-    curves.forEach((path, i) => {
-      const lit = active > i;
-      path.setAttribute("stroke", lit ? "#B5473A" : "#9CC2E0");
-      path.setAttribute("stroke-opacity", lit ? "0.9" : "0.3");
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const vh = window.innerHeight;
+    const box = root.getBoundingClientRect();
+    const h = wide.matches;
+    // Desktop: fills while the row travels from 85% to 35% of the viewport height.
+    // Mobile: the fill tip follows a reading line at 65% of the viewport.
+    let p = h ? clamp((vh * 0.85 - box.top) / (vh * 0.5)) : clamp((vh * 0.65 - box.top) / box.height);
+    if (reduce.matches) p = 1;
+    // Where each marker sits along the rail, 0–1
+    const at = steps.map((s) => {
+      const r = s.getBoundingClientRect();
+      return h ? (r.left - box.left) / box.width : (r.top - box.top) / box.height;
     });
+    fill.style.width = h ? `${p * 100}%` : "";
+    fill.style.height = h ? "" : `${p * 100}%`;
+    steps.forEach((s, i) => (s.dataset.on = String(p > 0 && p >= at[i])));
   };
 
-  // Auto-advance only while the diagram is on screen and not hovered
-  const sync = () => {
-    clearInterval(timer);
-    if (inView && !paused) {
-      timer = window.setInterval(() => {
-        active = (active + 1) % processSteps.length;
-        render();
-      }, INTERVAL);
-    }
+  const queue = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
   };
-
-  new IntersectionObserver(
-    ([entry]) => {
-      inView = entry.isIntersecting;
-      sync();
-    },
-    { threshold: 0.3 },
-  ).observe(root);
-
-  root.addEventListener("mouseenter", () => {
-    paused = true;
-    render();
-    sync();
-  });
-  root.addEventListener("mouseleave", () => {
-    paused = false;
-    render();
-    sync();
-  });
-
-  steps.forEach((card) =>
-    card.addEventListener("click", () => {
-      active = Number(card.dataset.step);
-      render();
-    }),
-  );
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  wide.addEventListener("change", queue);
+  update();
 </script>

@@ -20,7 +20,8 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
     </div>
 
     <div class="mt-20 grid grid-cols-12 gap-x-10">
-      <div class="col-span-12 lg:col-span-7">
+      <!-- data-no-trail: the pixel trail stays off the text so it can be read -->
+      <div data-no-trail class="col-span-12 lg:col-span-7">
         {
           services.map((s, i) => {
             const open = i === 0;
@@ -42,28 +43,15 @@ import { serviceBodyClass, serviceIndexClass, servicePlusClass, serviceTitleClas
                 </button>
                 <div data-service-body class={serviceBodyClass(open)}>
                   <div class="overflow-hidden">
-                    <div class="grid gap-8 pb-10 pl-10 md:grid-cols-2 md:pl-12">
-                      <div>
-                        <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
-                        <a
-                          href="#contacto"
-                          class="group/cta mt-5 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
-                        >
-                          Me interesa
-                          <span aria-hidden="true" class="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-                        </a>
-                      </div>
-                      <div class="space-y-5">
-                        <ul class="space-y-1.5">
-                          {s.deliverables.map((d) => (
-                            <li class="flex items-center gap-3 text-sm text-crema/70">
-                              <span class="h-1 w-3 bg-bruma/50" />
-                              {d}
-                            </li>
-                          ))}
-                        </ul>
-                        <p class="font-mono text-[11px] text-bruma/70">{s.tools.join("  ·  ")}</p>
-                      </div>
+                    <div class="max-w-xl pb-10 pl-10 md:pl-12">
+                      <p class="text-lg leading-snug text-crema/80">{s.lead}</p>
+                      <a
+                        href="#contacto"
+                        class="group/cta mt-5 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ladrillo transition-colors hover:text-crema"
+                      >
+                        Me interesa
+                        <span aria-hidden="true" class="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                      </a>
                     </div>
                   </div>
                 </div>

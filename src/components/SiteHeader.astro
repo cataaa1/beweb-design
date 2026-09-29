@@ -25,9 +25,6 @@ import { headerClass, mobileMenuClass } from "@/lib/classes";
     </nav>
 
     <div class="flex items-center gap-4">
-      <span class="hidden font-mono text-[11px] tracking-[0.1em] text-crema/50 xl:inline">
-        MDP <span data-clock></span>
-      </span>
       <a
         href="#contacto"
         class="group hidden items-center gap-2 bg-ladrillo px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-crema transition-colors hover:bg-crema hover:text-marino sm:inline-flex"
@@ -74,7 +71,6 @@ import { headerClass, mobileMenuClass } from "@/lib/classes";
   const header = document.querySelector<HTMLElement>("[data-header]")!;
   const menu = header.querySelector<HTMLElement>("[data-mobile-menu]")!;
   const toggle = header.querySelector<HTMLButtonElement>("[data-menu-toggle]")!;
-  const clock = header.querySelector<HTMLElement>("[data-clock]")!;
 
   let scrolled: boolean | null = null;
   const onScroll = () => {
@@ -100,13 +96,4 @@ import { headerClass, mobileMenuClass } from "@/lib/classes";
   toggle.addEventListener("click", () => setOpen(!open));
   menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
 
-  const tick = () => {
-    clock.textContent = new Date().toLocaleTimeString("es-AR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "America/Argentina/Buenos_Aires",
-    });
-  };
-  tick();
-  setInterval(tick, 30000);
 </script>

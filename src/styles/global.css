@@ -131,9 +131,6 @@ body {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
 }
-@keyframes bw-dash {
-  to { stroke-dashoffset: -40; }
-}
 @keyframes bw-float {
   0%, 100% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(0, -10px, 0); }
@@ -150,7 +147,6 @@ body {
 .bw-marquee { animation: bw-marquee 40s linear infinite; }
 .bw-marquee-slow { animation: bw-marquee 70s linear infinite; }
 .bw-blink { animation: bw-blink 1s steps(1) infinite; }
-.bw-dash { stroke-dasharray: 6 14; animation: bw-dash 1.4s linear infinite; }
 .bw-float { animation: bw-float 6s ease-in-out infinite; }
 /* Two-frame flicker: frame A and B take turns */
 .bw-flame-a { animation: bw-flicker 0.24s steps(1) infinite; }
@@ -174,6 +170,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bw-marquee, .bw-marquee-slow, .bw-blink, .bw-dash, .bw-float, .bw-flame-a { animation: none; }
+  .bw-marquee, .bw-marquee-slow, .bw-blink, .bw-float, .bw-flame-a { animation: none; }
   .bw-flame-b { animation: none; opacity: 0; }
 }

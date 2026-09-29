@@ -15,8 +15,6 @@ export interface Service {
   index: string;
   title: string;
   lead: string;
-  deliverables: string[];
-  tools: string[];
 }
 
 export interface Tool {
@@ -27,19 +25,9 @@ export interface ProcessStep {
   index: string;
   title: string;
   body: string;
-  duration: string;
 }
 
 export const projects: Project[] = [
-  {
-    id: "rollpix",
-    name: "Rollpix",
-    type: "Institucional",
-    domain: "rollpix.com",
-    image: "/img/proyectos/rollpix.webp",
-    imageHeight: 4328,
-    url: "https://rollpix.com/",
-  },
   {
     id: "starvie",
     name: "StarVie Argentina",
@@ -129,32 +117,24 @@ export const services: Service[] = [
     index: "01",
     title: "Sitios Institucionales",
     lead: "Presencia digital profesional que comunica tu marca con diseño moderno, rendimiento excepcional y las mejores prácticas de SEO.",
-    deliverables: ["Diseño a medida", "Autoadministrable", "Adaptado a celulares", "Posicionamiento en Google"],
-    tools: ["WordPress", "Astro"],
   },
   {
     id: "landing",
     index: "02",
     title: "Landing pages",
     lead: "Páginas de alto impacto, rápidas y efectivas. Cada pixel cuenta, cada segundo importa.",
-    deliverables: ["Mensaje claro y directo", "Carga ultrarrápida", "Formularios de contacto", "Pensadas para convertir"],
-    tools: ["Velocidad", "Conversión"],
   },
   {
     id: "tiendas",
     index: "03",
     title: "Catálogos & Tiendas Online",
     lead: "E-commerce completo y catálogos digitales que convierten visitantes en clientes, con las mejores plataformas del mercado.",
-    deliverables: ["Catálogo de productos", "Medios de pago", "Gestión de stock", "Envíos"],
-    tools: ["WooCommerce", "TiendaNube", "Shopify"],
   },
   {
     id: "desarrollo",
     index: "04",
     title: "Desarrollo & Consultoría",
     lead: "Soluciones a medida con las últimas tecnologías, frameworks modernos e inteligencia artificial aplicada a tu negocio.",
-    deliverables: ["Proyectos a medida", "Inteligencia artificial", "Asesoramiento", "Mejora de sitios existentes"],
-    tools: ["A medida", "IA"],
   },
 ];
 
@@ -182,33 +162,22 @@ export const processSteps: ProcessStep[] = [
     index: "01",
     title: "Descubrimiento",
     body: "Entendemos tu negocio, tus objetivos y tu audiencia para definir la estrategia perfecta.",
-    duration: "1–2 semanas",
   },
   {
     index: "02",
     title: "Diseño",
     body: "Creamos diseños que reflejan tu marca, con estética moderna y funcional.",
-    duration: "2–3 semanas",
   },
   {
     index: "03",
     title: "Desarrollo",
     body: "Construimos tu sitio con tecnología actual: rápido, seguro y fácil de usar.",
-    duration: "3–6 semanas",
   },
   {
     index: "04",
     title: "Lanzamiento",
     body: "Publicamos, probamos y te acompañamos con soporte continuo para que todo funcione perfecto.",
-    duration: "Continuo",
   },
-];
-
-export const stats = [
-  { value: 10, suffix: "+", label: "Proyectos destacados" },
-  { value: 4, suffix: "", label: "Servicios integrales" },
-  { value: 24, suffix: "hs", label: "Tiempo de respuesta" },
-  { value: 100, suffix: "%", label: "Diseño a medida" },
 ];
 
 export const navLinks = [

@@ -43,19 +43,3 @@ export const visualPanelClass = (layout: string, active: boolean) =>
   layout +
   " transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] " +
   (active ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(0.96)]");
-
-export const stepCardClass = (on: boolean, extra = "") =>
-  "flex flex-col border bg-marino-2 p-5 text-left transition-all duration-500 " +
-  (on
-    ? "z-10 -translate-y-1 border-ladrillo shadow-[0_30px_60px_-20px_rgba(181,71,58,0.45)]"
-    : "border-bruma/15 shadow-[0_20px_40px_-24px_rgba(0,0,0,0.8)]") +
-  (extra ? " " + extra : "");
-
-export const stepIndexClass = (on: boolean, done: boolean) =>
-  "text-5xl font-semibold leading-none tracking-[-0.05em] transition-colors duration-500 lg:text-6xl " +
-  (on ? "text-ladrillo" : done ? "text-crema/25" : "text-crema/10");
-
-export const stepDotClass = (on: boolean, done: boolean) =>
-  "h-1.5 w-1.5 " + (on ? "bg-ladrillo" : done ? "bg-bruma" : "bg-crema/20");
-
-export const stepStatus = (on: boolean, done: boolean) => (on ? "en curso" : done ? "listo" : "pendiente");
