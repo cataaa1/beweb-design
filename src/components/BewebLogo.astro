@@ -1,10 +1,23 @@
 ---
 interface Props {
   class?: string;
+  /** Rendered width, so the browser picks the small file for the header and the full one for the footer */
+  sizes?: string;
+  loading?: "eager" | "lazy";
 }
 
-const { class: className = "h-[26px] w-auto" } = Astro.props;
+const { class: className = "h-[26px] w-auto", sizes = "78px", loading = "eager" } = Astro.props;
 ---
 
 <!-- BeWeb wordmark: official logo artwork, background keyed out to transparent -->
-<img src="/img/logo_beweb_3.webp" width="2172" height="724" alt="BeWeb" class={className} />
+<img
+  src="/img/logo_beweb_3.webp"
+  srcset="/img/logo_beweb_sm.webp 303w, /img/logo_beweb_3.webp 2172w"
+  sizes={sizes}
+  width="2172"
+  height="724"
+  alt="BeWeb"
+  loading={loading}
+  decoding="async"
+  class={className}
+/>

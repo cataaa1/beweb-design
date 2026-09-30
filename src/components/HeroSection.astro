@@ -14,22 +14,23 @@ const PHRASES = [
 ---
 
 <section id="top" class="relative overflow-hidden bg-marino pb-16 pt-16 md:pb-24">
-  <div class="mx-auto grid max-w-[1440px] grid-cols-12 px-5 md:px-10">
+  <!-- From md up the text block takes about half the viewport, pushing the pixel field further down -->
+  <div class="mx-auto grid max-w-[1440px] grid-cols-12 px-5 md:min-h-[52vh] md:items-center md:px-10">
     <h1
-      class="col-span-12 pb-10 pt-14 text-[15vw] font-medium uppercase leading-[0.86] tracking-[-0.055em] text-crema md:col-span-7 md:pb-14 md:pt-20 md:text-[8.6vw] lg:col-span-8 xl:text-[128px]"
+      class="col-span-12 pb-10 pt-14 text-[15vw] font-medium uppercase leading-[0.86] tracking-[-0.055em] text-crema md:col-span-7 md:py-12 md:pr-6 md:text-[min(10.5vw,152px)]"
     >
       <SplitLines lines={["Webs que", "despegan."]} />
       <span class="sr-only">BeWeb, agencia de diseño y desarrollo web en Mar del Plata</span>
     </h1>
 
-    <div class="col-span-12 border-t border-bruma/20 pb-10 pt-8 md:col-span-5 md:my-16 lg:col-span-4 md:flex md:items-center md:border-l md:border-t-0 md:pb-0 md:pl-10 md:pt-0">
+    <div class="col-span-12 border-t border-bruma/20 pb-10 pt-8 md:col-span-5 md:my-12 md:flex md:items-center md:border-l md:border-t-0 md:pb-0 md:pl-10 md:pt-0">
       <Reveal delay={250} class="w-full">
         <!-- Rotating phrases: each one slides up into view, holds, then slides out (scripts below).
-             The size steps down at md, where this column is only 5 of 12, and the box holds four lines
-             from md up, because that is what the longest phrase needs in the narrower column. -->
+             The size steps down at md, where this column is only 5 of 12, and the box holds four lines,
+             because that is what the longest phrase needs in the narrower column. -->
         <p
           data-rotator
-          class="relative h-[4.5em] max-w-[440px] overflow-hidden text-3xl font-medium leading-[1.08] tracking-[-0.035em] text-crema md:text-[23px] lg:text-[34px] xl:text-[40px]"
+          class="relative h-[4.5em] max-w-[520px] overflow-hidden text-3xl font-medium leading-[1.08] tracking-[-0.035em] text-crema md:text-[26px] lg:text-[36px] xl:text-[44px]"
         >
           {
             PHRASES.map((phrase, i) => (

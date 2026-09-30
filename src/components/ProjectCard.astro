@@ -38,7 +38,7 @@ const scrollMs = Math.round(((project.imageHeight - visible) / 1280) * 3000);
       <img
         src={project.image}
         srcset={`${project.image.replace(".webp", "-700.webp")} 700w, ${project.image.replace(".webp", "-1000.webp")} 1000w, ${project.image} 1280w`}
-        sizes="(min-width: 768px) 50vw, 100vw"
+        sizes="(min-width: 1440px) 660px, (min-width: 768px) calc(50vw - 60px), calc(100vw - 40px)"
         alt={`Sitio de ${project.name}`}
         width="1280"
         height={project.imageHeight}

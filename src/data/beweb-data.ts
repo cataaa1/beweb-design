@@ -29,6 +29,15 @@ export interface ProcessStep {
 
 export const projects: Project[] = [
   {
+    id: "cabrales-dia-del-cafe",
+    name: "Cabrales · Día del Café",
+    type: "Landing",
+    domain: "cabrales.com/diadelcafe",
+    image: "/img/proyectos/cabrales-dia-del-cafe.webp",
+    imageHeight: 2691,
+    url: "https://www.cabrales.com/diadelcafe",
+  },
+  {
     id: "telpin",
     name: "Telpin",
     type: "Institucional",

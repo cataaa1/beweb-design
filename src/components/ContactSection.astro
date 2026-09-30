@@ -163,8 +163,10 @@ const fieldInput = "mt-2 block w-full bg-transparent text-xl text-crema outline-
   const submitLabel = form.querySelector<HTMLElement>("[data-contact-submit-label]")!;
   const turnstileBox = form.querySelector<HTMLElement>("[data-turnstile]")!;
 
-  // Cloudflare Turnstile (script loaded with render=explicit in the layout)
+  // Cloudflare Turnstile. Its script is heavy, so it only loads once the form gets close to the
+  // viewport (or takes focus), instead of on every page view
   let widgetId: string | null = null;
+  let turnstileRequested = false;
   const mountTurnstile = () => {
     if (!w.turnstile) {
       setTimeout(mountTurnstile, 200);
@@ -172,7 +174,25 @@ const fieldInput = "mt-2 block w-full bg-transparent text-xl text-crema outline-
     }
     widgetId = w.turnstile.render(turnstileBox, { sitekey: TURNSTILE_SITEKEY, theme: "dark", language: "es" });
   };
-  mountTurnstile();
+  const loadTurnstile = () => {
+    if (turnstileRequested) return;
+    turnstileRequested = true;
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    document.head.append(script);
+    mountTurnstile();
+  };
+  const turnstileObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      turnstileObserver.disconnect();
+      loadTurnstile();
+    },
+    { rootMargin: "600px 0px" },
+  );
+  turnstileObserver.observe(form);
+  form.addEventListener("focusin", loadTurnstile, { once: true });
   const resetTurnstile = () => {
     if (widgetId && w.turnstile) w.turnstile.reset(widgetId);
   };
